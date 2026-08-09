@@ -1,14 +1,21 @@
 "use client";
 
+import React from "react";
+
 // ─── Footer ───────────────────────────────────────────────────────────────────
-// Dark footer: logo / description | Quick Links | Connect With Us
-// Bottom: copyright line + "Designed with ♥ for His Glory"
+// Minimalist, editorial, Awwwards-level closing section
+// Features:
+// - Generous whitespace and deliberate grid alignment
+// - Crisp brand statement & Barlow Condensed identity treatment
+// - Micro-numbered navigation items with subtle gold hover animations
+// - Restrained social links with clean SVG icons
+// - Clean legal bottom bar (zero emojis)
 // ─────────────────────────────────────────────────────────────────────────────
 
 const InstagramIcon = () => (
   <svg
-    width="18"
-    height="18"
+    width="16"
+    height="16"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -25,8 +32,8 @@ const InstagramIcon = () => (
 
 const YoutubeIcon = () => (
   <svg
-    width="18"
-    height="18"
+    width="16"
+    height="16"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -42,8 +49,8 @@ const YoutubeIcon = () => (
 
 const WhatsAppIcon = () => (
   <svg
-    width="18"
-    height="18"
+    width="16"
+    height="16"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -59,10 +66,11 @@ const WhatsAppIcon = () => (
 const JYLogoMark = () => (
   <div
     style={{
-      width: "36px",
-      height: "36px",
-      border: "1px solid var(--gold-muted)",
+      width: "32px",
+      height: "32px",
+      border: "1px solid var(--border)",
       borderRadius: "4px",
+      backgroundColor: "rgba(10, 18, 25, 0.6)",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
@@ -71,10 +79,13 @@ const JYLogoMark = () => (
   >
     <span
       style={{
-        fontSize: "0.65rem",
-        fontWeight: 700,
-        color: "var(--gold)",
-        letterSpacing: "0.04em",
+        fontFamily:
+          "var(--font-barlow-condensed), 'Barlow Condensed', sans-serif",
+        fontSize: "0.8rem",
+        fontWeight: 800,
+        color: "var(--gold-bright)",
+        letterSpacing: "0.06em",
+        lineHeight: 1,
       }}
     >
       JY
@@ -93,19 +104,19 @@ const quickLinks = [
 const socialLinks = [
   {
     id: "instagram",
-    label: "Instagram",
+    label: "INSTAGRAM",
     href: "#",
     icon: <InstagramIcon />,
   },
   {
     id: "youtube",
-    label: "YouTube",
+    label: "YOUTUBE",
     href: "#",
     icon: <YoutubeIcon />,
   },
   {
     id: "whatsapp",
-    label: "WhatsApp",
+    label: "WHATSAPP",
     href: "#",
     icon: <WhatsAppIcon />,
   },
@@ -118,56 +129,72 @@ export default function Footer() {
       style={{
         backgroundColor: "var(--bg-secondary)",
         borderTop: "1px solid var(--border-subtle)",
+        position: "relative",
       }}
     >
-      {/* Main footer content */}
+      {/* ── Main Footer Body ── */}
       <div
         className="container-veritas"
-        style={{ padding: "3rem 2rem 2rem" }}
+        style={{ padding: "5rem 2rem 3.5rem" }}
       >
         <div
           className="footer-grid"
           style={{
             display: "grid",
-            gridTemplateColumns: "1.6fr 1fr 1fr",
-            gap: "3rem",
+            gridTemplateColumns: "1.8fr 1fr 1fr",
+            gap: "4rem",
+            alignItems: "start",
           }}
         >
-          {/* ── Column 1: Brand ── */}
-          <div>
+          {/* ── Column 1: Brand & Philosophy ── */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "0.75rem",
-                marginBottom: "1.25rem",
+                gap: "0.85rem",
               }}
             >
               <JYLogoMark />
               <div>
-                <p
+                <span
                   style={{
-                    fontSize: "0.65rem",
-                    fontWeight: 700,
-                    letterSpacing: "0.12em",
-                    textTransform: "uppercase",
+                    fontFamily:
+                      "var(--font-barlow-condensed), 'Barlow Condensed', sans-serif",
+                    fontSize: "1.25rem",
+                    fontWeight: 800,
+                    letterSpacing: "0.08em",
                     color: "var(--text)",
-                    lineHeight: 1.2,
+                    textTransform: "uppercase",
+                    lineHeight: 1,
+                    display: "block",
                   }}
                 >
-                  Jesus Youth
-                  <br />
-                  Pala
-                </p>
+                  VERITAS 2025
+                </span>
+                <span
+                  style={{
+                    fontSize: "0.52rem",
+                    fontWeight: 600,
+                    letterSpacing: "0.22em",
+                    textTransform: "uppercase",
+                    color: "var(--text-muted)",
+                    marginTop: "2px",
+                    display: "block",
+                  }}
+                >
+                  JESUS YOUTH PALA
+                </span>
               </div>
             </div>
 
             <p
               style={{
-                fontSize: "0.75rem",
+                fontSize: "0.72rem",
                 lineHeight: 1.8,
                 color: "var(--text-muted)",
-                maxWidth: "300px",
+                maxWidth: "340px",
+                fontWeight: 400,
               }}
             >
               VERITAS is an initiative of Jesus Youth Pala to bring young
@@ -178,45 +205,55 @@ export default function Footer() {
 
           {/* ── Column 2: Quick Links ── */}
           <div>
-            <p
+            <span
               style={{
-                fontSize: "0.6rem",
-                fontWeight: 600,
-                letterSpacing: "0.18em",
+                fontSize: "0.55rem",
+                fontWeight: 700,
+                letterSpacing: "0.22em",
                 textTransform: "uppercase",
-                color: "var(--text-muted)",
-                marginBottom: "1.1rem",
+                color: "var(--gold-muted)",
+                display: "block",
+                marginBottom: "1.4rem",
               }}
             >
-              Quick Links
-            </p>
+              01 // NAVIGATION
+            </span>
             <nav aria-label="Footer quick links">
               <ul
                 style={{
                   listStyle: "none",
                   display: "flex",
                   flexDirection: "column",
-                  gap: "0.6rem",
+                  gap: "0.65rem",
                 }}
               >
-                {quickLinks.map((link) => (
+                {quickLinks.map((link, idx) => (
                   <li key={link.label}>
                     <a
                       href={link.href}
                       style={{
-                        fontSize: "0.78rem",
+                        fontSize: "0.72rem",
+                        fontWeight: 500,
+                        letterSpacing: "0.08em",
                         color: "var(--text-muted)",
                         textDecoration: "none",
-                        transition: "color 0.25s ease",
+                        transition: "all 0.25s ease",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
                       }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.color = "var(--gold)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.color = "var(--text-muted)";
-                      }}
+                      className="footer-nav-link"
                     >
-                      {link.label}
+                      <span
+                        style={{
+                          fontSize: "0.6rem",
+                          color: "var(--text-dim)",
+                          fontFamily: "monospace",
+                        }}
+                      >
+                        0{idx + 1}
+                      </span>
+                      <span>{link.label}</span>
                     </a>
                   </li>
                 ))}
@@ -226,51 +263,70 @@ export default function Footer() {
 
           {/* ── Column 3: Connect ── */}
           <div>
-            <p
+            <span
               style={{
-                fontSize: "0.6rem",
-                fontWeight: 600,
-                letterSpacing: "0.18em",
+                fontSize: "0.55rem",
+                fontWeight: 700,
+                letterSpacing: "0.22em",
                 textTransform: "uppercase",
-                color: "var(--text-muted)",
-                marginBottom: "1.1rem",
+                color: "var(--gold-muted)",
+                display: "block",
+                marginBottom: "1.4rem",
               }}
             >
-              Connect With Us
-            </p>
-            <div style={{ display: "flex", gap: "1rem" }}>
+              02 // CONNECT
+            </span>
+            <ul
+              style={{
+                listStyle: "none",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.85rem",
+              }}
+            >
               {socialLinks.map((social) => (
-                <a
-                  key={social.id}
-                  href={social.href}
-                  aria-label={social.label}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    color: "var(--text-muted)",
-                    transition: "color 0.25s ease",
-                    display: "flex",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.color = "var(--gold)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.color = "var(--text-muted)";
-                  }}
-                >
-                  {social.icon}
-                </a>
+                <li key={social.id}>
+                  <a
+                    href={social.href}
+                    aria-label={social.label}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "0.65rem",
+                      fontSize: "0.65rem",
+                      fontWeight: 600,
+                      letterSpacing: "0.18em",
+                      color: "var(--text-muted)",
+                      textDecoration: "none",
+                      transition: "color 0.25s ease",
+                    }}
+                    className="footer-social-link"
+                  >
+                    <span
+                      style={{
+                        color: "var(--gold-muted)",
+                        transition: "color 0.25s ease",
+                      }}
+                      className="social-icon-wrapper"
+                    >
+                      {social.icon}
+                    </span>
+                    <span>{social.label}</span>
+                  </a>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </div>
       </div>
 
-      {/* Bottom bar */}
+      {/* ── Bottom Legal Bar ── */}
       <div
         style={{
           borderTop: "1px solid var(--border-subtle)",
-          padding: "1rem 0",
+          padding: "1.25rem 0",
         }}
       >
         <div
@@ -280,40 +336,53 @@ export default function Footer() {
             alignItems: "center",
             justifyContent: "space-between",
             flexWrap: "wrap",
-            gap: "0.5rem",
+            gap: "1rem",
           }}
         >
           <p
             style={{
-              fontSize: "0.65rem",
+              fontSize: "0.6rem",
               color: "var(--text-dim)",
-              letterSpacing: "0.04em",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
             }}
           >
-            © 2025 Jesus Youth Pala. All rights reserved.
+            © 2025 JESUS YOUTH PALA. ALL RIGHTS RESERVED.
           </p>
           <p
             style={{
-              fontSize: "0.65rem",
+              fontSize: "0.6rem",
               color: "var(--text-dim)",
-              letterSpacing: "0.04em",
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
             }}
           >
-            Designed with{" "}
-            <span style={{ color: "var(--gold-muted)" }}>♥</span> for His
-            Glory
+            ST. THOMAS COLLEGE, PALA • DESIGNED FOR HIS GLORY
           </p>
         </div>
       </div>
 
+      {/* ── Component Micro-Styles ── */}
       <style jsx>{`
-        @media (max-width: 768px) {
+        .footer-nav-link:hover {
+          color: var(--gold-bright) !important;
+          transform: translateX(4px);
+        }
+        .footer-social-link:hover {
+          color: var(--gold-bright) !important;
+        }
+        .footer-social-link:hover .social-icon-wrapper {
+          color: var(--gold) !important;
+        }
+
+        @media (max-width: 880px) {
           .footer-grid {
             grid-template-columns: 1fr !important;
-            gap: 2rem !important;
+            gap: 2.5rem !important;
           }
         }
       `}</style>
     </footer>
   );
 }
+
