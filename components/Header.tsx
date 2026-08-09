@@ -4,21 +4,18 @@ import React, { useState, useEffect } from "react";
 import {
   Menu,
   X,
-  Sparkles,
   Calendar,
   MapPin,
-  ArrowUpRight,
   ChevronRight,
 } from "lucide-react";
 
 // ─── Header Component ────────────────────────────────────────────────────────
 // Awwwards-inspired modern, sleek, and responsive header navigation bar
 // Features:
-// - Top notification ticker bar (dismissible)
 // - Floating glassmorphic sticky header with scroll-aware backdrop blur & height
 // - Sleek brand logo & Jesus Youth Pala identity emblem
 // - Desktop nav links with animated gold indicators
-// - Live event status badge with pulsing live indicator
+// - Live event status badge with pulsing indicator
 // - Sleek gold CTA button with hover micro-interactions
 // - Full-screen mobile drawer menu with staggered entrance & accessibility
 // ─────────────────────────────────────────────────────────────────────────────
@@ -27,7 +24,6 @@ interface NavItem {
   id: string;
   label: string;
   href: string;
-  badge?: string;
 }
 
 const navItems: NavItem[] = [
@@ -41,7 +37,6 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
-  const [bannerVisible, setBannerVisible] = useState(true);
 
   // Handle scroll events for dynamic glass effect and section highlighting
   useEffect(() => {
@@ -110,8 +105,7 @@ export default function Header() {
           transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
         }}
       >
-
-        {/* ── 2. Main Navigation Bar ── */}
+        {/* ── Main Navigation Bar ── */}
         <nav
           aria-label="Main navigation"
           style={{
@@ -146,7 +140,6 @@ export default function Header() {
                   alignItems: "center",
                   gap: "0.85rem",
                   textDecoration: "none",
-                  group: "true",
                 }}
               >
                 {/* JY Gold Badge Icon */}
@@ -372,7 +365,7 @@ export default function Header() {
         </nav>
       </header>
 
-      {/* ── 3. Full-Screen Mobile Navigation Drawer ── */}
+      {/* ── Full-Screen Mobile Navigation Drawer ── */}
       <div
         aria-hidden={!mobileMenuOpen}
         style={{
