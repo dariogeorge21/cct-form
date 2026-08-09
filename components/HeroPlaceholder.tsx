@@ -4,9 +4,10 @@ import { ChevronDown } from "lucide-react";
 import CountdownTimer from "./CountdownTimer";
 
 // ─── Hero Section ─────────────────────────────────────────────────────────────
-// Responsive full-viewport hero section.
-// Uses `HeroDesktop.png` for desktop & tablet devices and `HeroMobile.png` for mobile screens.
-// Features a minimal, Awwwards-styled Countdown Timer targeting Sep 18, 2026 5:00 PM.
+// Framed hero section.
+// Desktop: Generous 4-side padding/margins (top 6.75rem, bottom 2.5rem, sides 4.5rem, max-width 1160px)
+//          so the entire desktop hero artwork is properly framed and viewed across the landing view.
+// Mobile: Strictly preserved compact 12px framed layout.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function HeroPlaceholder() {
@@ -16,10 +17,8 @@ export default function HeroPlaceholder() {
       aria-label="Hero Banner"
       style={{
         width: "100%",
-        minHeight: "100vh",
-        height: "100vh",
-        // dvh (dynamic viewport height) handles mobile browser toolbar resizing smoothly
-        height: "100dvh",
+        height: "99dvh",
+        minHeight: "640px",
         backgroundColor: "#03090d",
         position: "relative",
         overflow: "hidden",
@@ -27,33 +26,33 @@ export default function HeroPlaceholder() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "flex-end",
-        paddingBottom: "1.75rem",
+        paddingBottom: "2.5rem",
       }}
     >
-      {/* ── Desktop & Mobile Fullscreen Background ── */}
-      <div className="hero-bg-layer" />
-
-      {/* ── Bottom Gradient Fade blending Hero into the dark page ── */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: "220px",
-          background:
-            "linear-gradient(to bottom, rgba(3,9,13,0) 0%, rgba(3,9,13,0.75) 50%, #03090d 100%)",
-          pointerEvents: "none",
-          zIndex: 2,
-        }}
-      />
+      {/* ── Framed Desktop & Mobile Background Layer with 4-Side Margins ── */}
+      <div className="hero-bg-layer">
+        {/* Bottom Gradient Fade inside the hero frame */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: "220px",
+            background:
+              "linear-gradient(to bottom, rgba(3,9,13,0) 0%, rgba(3,9,13,0.85) 55%, #03090d 100%)",
+            pointerEvents: "none",
+            zIndex: 2,
+          }}
+        />
+      </div>
 
       {/* ── Minimal Awwwards Countdown Timer Overlay ── */}
       <div
         style={{
           position: "relative",
           zIndex: 10,
-          marginBottom: "1.25rem",
+          marginBottom: "1rem",
         }}
       >
         <CountdownTimer />
@@ -100,17 +99,23 @@ export default function HeroPlaceholder() {
         />
       </a>
 
-      {/* ── Responsive CSS styling for mobile & desktop backgrounds ── */}
+      {/* ── Responsive CSS styling for mobile & desktop framed backgrounds ── */}
       <style jsx>{`
         .hero-bg-layer {
           position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
+          top: 6.75rem;
+          bottom: 2.5rem;
+          left: 4.5rem;
+          right: 4.5rem;
+          max-width: 1160px;
+          margin: 0 auto;
           background-image: url('/HeroDesktop.png');
           background-size: cover;
           background-position: center center;
           background-repeat: no-repeat;
+          border-radius: 16px;
+          border: 1px solid var(--border-subtle);
+          overflow: hidden;
           z-index: 1;
         }
 
@@ -119,14 +124,37 @@ export default function HeroPlaceholder() {
           transform: translateY(3px);
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 1100px) {
           .hero-bg-layer {
+            top: 6.5rem;
+            bottom: 2rem;
+            left: 2.5rem;
+            right: 2.5rem;
+          }
+        }
+
+        @media (max-width: 768px) {
+          #hero {
+            height: 82dvh !important;
+            min-height: 480px !important;
+            padding-bottom: 1.5rem !important;
+          }
+          .hero-bg-layer {
+            top: 6rem;
+            bottom: 1.25rem;
+            left: 1.25rem;
+            right: 1.25rem;
             background-image: url('/HeroMobile.png');
             background-position: center top;
             background-size: cover;
+            border-radius: 12px;
           }
         }
       `}</style>
     </section>
   );
 }
+
+
+
+
