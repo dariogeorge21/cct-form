@@ -186,18 +186,6 @@ export default function RegistrationForm() {
               Register Now
             </button>
           </form>
-
-          <p
-            style={{
-              fontSize: "0.65rem",
-              color: "var(--text-dim)",
-              textAlign: "center",
-              marginTop: "1rem",
-              letterSpacing: "0.04em",
-            }}
-          >
-            Spots are limited. Register soon!
-          </p>
         </>
       )}
     </div>

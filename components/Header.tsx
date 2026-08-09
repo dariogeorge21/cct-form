@@ -28,7 +28,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { id: "about", label: "ABOUT", href: "#about" },
-  { id: "speakers", label: "SPEAKERS", href: "#speakers-register" },
+  { id: "register", label: "REGISTER", href: "#register" },
   { id: "info", label: "EVENT INFO", href: "#event-info" },
   { id: "venue", label: "VENUE", href: "#event-info" },
 ];
@@ -48,7 +48,7 @@ export default function Header() {
       }
 
       // Track active section
-      const sections = ["about", "speakers-register", "event-info"];
+      const sections = ["about", "register", "event-info"];
       const scrollPosition = window.scrollY + 200;
 
       for (const sectionId of sections) {
@@ -235,8 +235,8 @@ export default function Header() {
                 {navItems.map((item) => {
                   const isActive =
                     (item.href === "#about" && activeSection === "about") ||
-                    (item.href === "#speakers-register" &&
-                      activeSection === "speakers-register") ||
+                    (item.href === "#register" &&
+                      activeSection === "register") ||
                     (item.href === "#event-info" &&
                       activeSection === "event-info");
 
@@ -322,7 +322,7 @@ export default function Header() {
 
                 {/* Primary CTA Button */}
                 <a
-                  href="#speakers-register"
+                  href="#register"
                   className="btn-outline-gold cta-header-btn"
                   style={{
                     display: "inline-flex",
@@ -498,7 +498,7 @@ export default function Header() {
           </div>
 
           <a
-            href="#speakers-register"
+            href="#register"
             onClick={() => setMobileMenuOpen(false)}
             className="btn-fill-gold"
             style={{
