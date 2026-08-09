@@ -130,7 +130,6 @@ export default function Header() {
                   alignItems: "center",
                   gap: "0.85rem",
                   textDecoration: "none",
-                  group: "brand",
                 }}
                 className="brand-logo-container"
               >
