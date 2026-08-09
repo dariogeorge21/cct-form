@@ -1,11 +1,12 @@
 "use client";
 
 import { ChevronDown } from "lucide-react";
+import CountdownTimer from "./CountdownTimer";
 
 // ─── Hero Section ─────────────────────────────────────────────────────────────
 // Responsive full-viewport hero section.
 // Uses `HeroDesktop.png` for desktop & tablet devices and `HeroMobile.png` for mobile screens.
-// Occupies 100% full screen height (100vh / 100dvh) so wallpaper appears first before scrolling into website content.
+// Features a minimal, Awwwards-styled Countdown Timer targeting Sep 18, 2026 5:00 PM.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function HeroPlaceholder() {
@@ -23,8 +24,10 @@ export default function HeroPlaceholder() {
         position: "relative",
         overflow: "hidden",
         display: "flex",
-        alignItems: "flex-end",
-        justifyContent: "center",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "flex-end",
+        paddingBottom: "1.75rem",
       }}
     >
       {/* ── Desktop & Mobile Fullscreen Background ── */}
@@ -37,26 +40,36 @@ export default function HeroPlaceholder() {
           bottom: 0,
           left: 0,
           right: 0,
-          height: "180px",
+          height: "220px",
           background:
-            "linear-gradient(to bottom, rgba(3,9,13,0) 0%, rgba(3,9,13,0.7) 60%, #03090d 100%)",
+            "linear-gradient(to bottom, rgba(3,9,13,0) 0%, rgba(3,9,13,0.75) 50%, #03090d 100%)",
           pointerEvents: "none",
           zIndex: 2,
         }}
       />
+
+      {/* ── Minimal Awwwards Countdown Timer Overlay ── */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 10,
+          marginBottom: "1.25rem",
+        }}
+      >
+        <CountdownTimer />
+      </div>
 
       {/* ── Scroll Down Indicator Cue ── */}
       <a
         href="#about"
         aria-label="Scroll to content"
         style={{
-          position: "absolute",
-          bottom: "2.2rem",
+          position: "relative",
           zIndex: 10,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: "0.35rem",
+          gap: "0.25rem",
           color: "var(--gold-bright)",
           textDecoration: "none",
           opacity: 0.85,
@@ -78,7 +91,7 @@ export default function HeroPlaceholder() {
           SCROLL TO EXPLORE
         </span>
         <ChevronDown
-          size={18}
+          size={16}
           className="animate-bounce"
           style={{
             color: "var(--gold-bright)",
