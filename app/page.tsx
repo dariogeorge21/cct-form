@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import HeroPlaceholder from "@/components/HeroPlaceholder";
+import CountdownTimer from "@/components/CountdownTimer";
 import AboutSection from "@/components/AboutSection";
 import RegistrationForm from "@/components/RegistrationForm";
 import EventInfoStrip from "@/components/EventInfoStrip";
@@ -8,7 +9,8 @@ import Footer from "@/components/Footer";
 // ─── VERITAS 2025 — Main Page ─────────────────────────────────────────────────
 // Component hierarchy:
 //   Header                 (sleek sticky Awwwards glassmorphic navigation header)
-//   HeroPlaceholder        (full-viewport hero wallpaper with countdown timer)
+//   HeroPlaceholder        (full-viewport framed hero wallpaper)
+//   CountdownTimer         (standalone minimal Awwwards countdown timer strip)
 //   AboutSection           (2-col: editorial copy + 3 feature cards)
 //   RegistrationForm       (centered dark bordered registration form panel)
 //   EventInfoStrip         (4-item horizontal info bar)
@@ -21,16 +23,33 @@ export default function Home() {
       {/* 0. Header Navigation */}
       <Header />
 
-      {/* 1. Hero — full-viewport image wallpaper & timer */}
+      {/* 1. Hero — full-viewport framed image wallpaper */}
       <HeroPlaceholder />
 
-      {/* 2. About VERITAS */}
+      {/* 2. Countdown Timer Section */}
+      <section
+        aria-label="Event Countdown"
+        style={{
+          backgroundColor: "var(--bg)",
+          padding: "3.5rem 0",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          borderBottom: "1px solid var(--border-subtle)",
+        }}
+      >
+        <div className="container-veritas">
+          <CountdownTimer />
+        </div>
+      </section>
+
+      {/* 3. About VERITAS */}
       <AboutSection />
 
       {/* Thin divider */}
       <div style={{ borderTop: "1px solid var(--border-subtle)" }} />
 
-      {/* 3. Registration Form Section */}
+      {/* 4. Registration Form Section */}
       <section
         id="register"
         aria-label="Registration"
@@ -48,10 +67,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. Event Info Strip */}
+      {/* 5. Event Info Strip */}
       <EventInfoStrip />
 
-      {/* 5. Footer */}
+      {/* 6. Footer */}
       <Footer />
     </main>
   );

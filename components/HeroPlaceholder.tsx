@@ -1,7 +1,6 @@
 "use client";
 
 import { ChevronDown } from "lucide-react";
-import CountdownTimer from "./CountdownTimer";
 
 // ─── Hero Section ─────────────────────────────────────────────────────────────
 // Framed hero section.
@@ -45,17 +44,6 @@ export default function HeroPlaceholder() {
             zIndex: 2,
           }}
         />
-      </div>
-
-      {/* ── Minimal Awwwards Countdown Timer Overlay ── */}
-      <div
-        style={{
-          position: "relative",
-          zIndex: 10,
-          marginBottom: "1rem",
-        }}
-      >
-        <CountdownTimer />
       </div>
 
       {/* ── Scroll Down Indicator Cue ── */}
@@ -154,6 +142,7 @@ export default function HeroPlaceholder() {
     </section>
   );
 }
+
 
 
 
