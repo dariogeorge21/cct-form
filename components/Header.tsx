@@ -194,7 +194,7 @@ export default function Header() {
                         color: "var(--gold)",
                       }}
                     >
-                      2025
+                      2026
                     </span>
                   </div>
                   <span
@@ -486,7 +486,7 @@ export default function Header() {
               }}
             >
               <Calendar size={14} style={{ color: "var(--gold)" }} />
-              <span>September 18 – 21, 2025</span>
+              <span>September 18 – 21, 2026</span>
             </div>
 
             <div
@@ -527,7 +527,7 @@ export default function Header() {
               marginTop: "0.5rem",
             }}
           >
-            JESUS YOUTH PALA • VERITAS 2025
+            JESUS YOUTH PALA • VERITAS 2026
           </p>
         </div>
       </div>

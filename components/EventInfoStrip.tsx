@@ -87,7 +87,7 @@ const infoItems: InfoItem[] = [
     id: "dates",
     icon: <CalendarIcon />,
     label: "Dates",
-    value: "Sep 18 – Sep 21, 2025",
+    value: "Sep 18 – Sep 21, 2026",
   },
   {
     id: "venue",

@@ -170,7 +170,7 @@ export default function Footer() {
                     display: "block",
                   }}
                 >
-                  VERITAS 2025
+                  VERITAS 2026
                 </span>
                 <span
                   style={{
@@ -347,7 +347,7 @@ export default function Footer() {
               textTransform: "uppercase",
             }}
           >
-            © 2025 JESUS YOUTH PALA. ALL RIGHTS RESERVED.
+            © 2026 JESUS YOUTH PALA. ALL RIGHTS RESERVED.
           </p>
           <p
             style={{

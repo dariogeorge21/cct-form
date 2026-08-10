@@ -6,7 +6,7 @@ import RegistrationForm from "@/components/RegistrationForm";
 import EventInfoStrip from "@/components/EventInfoStrip";
 import Footer from "@/components/Footer";
 
-// ─── VERITAS 2025 — Main Page ─────────────────────────────────────────────────
+// ─── VERITAS 2026 — Main Page ─────────────────────────────────────────────────
 // Component hierarchy:
 //   Header                 (sleek sticky Awwwards glassmorphic navigation header)
 //   HeroPlaceholder        (full-viewport framed hero wallpaper)

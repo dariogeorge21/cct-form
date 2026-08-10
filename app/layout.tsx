@@ -16,13 +16,13 @@ const barlowCondensed = Barlow_Condensed({
 });
 
 export const metadata: Metadata = {
-  title: "VERITAS 2025 — Jesus Youth Pala | A Call to Truth. A Life Transformed.",
+  title: "VERITAS 2026 — Jesus Youth Pala | A Call to Truth. A Life Transformed.",
   description:
-    "VERITAS is a divine encounter for youth and young adults by Jesus Youth Pala. September 18–21, 2025 at St Thomas College, Pala. Four days of worship, the Word, community, and mission.",
+    "VERITAS is a divine encounter for youth and young adults by Jesus Youth Pala. September 18–21, 2026 at St Thomas College, Pala. Four days of worship, the Word, community, and mission.",
   keywords: ["VERITAS", "Jesus Youth Pala", "Christian youth event", "Catholic youth", "Pala", "Kerala"],
   openGraph: {
-    title: "VERITAS 2025 — Jesus Youth Pala",
-    description: "A Call to Truth. A Life Transformed. Sep 18–21, 2025.",
+    title: "VERITAS 2026 — Jesus Youth Pala",
+    description: "A Call to Truth. A Life Transformed. Sep 18–21, 2026.",
     type: "website",
   },
 };
