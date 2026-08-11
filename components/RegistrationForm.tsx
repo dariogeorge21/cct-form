@@ -66,8 +66,8 @@ export default function RegistrationForm() {
       case "parentPhone":
         return /^\+?[\d\s-]{10,}$/.test(value as string) ? "" : "Enter a valid phone number.";
       case "txId":
-        if (formData.paymentOption === "pay-at-event" && (value as string).trim() === "") {
-          return "Transaction ID is required for Pay at Event.";
+        if (formData.paymentOption === "pay-now" && (value as string).trim() === "") {
+          return "Transaction ID is required for Pay Now.";
         }
         return "";
       case "confirmed":
@@ -132,7 +132,7 @@ export default function RegistrationForm() {
     let isValid = true;
 
     step2Fields.forEach((field) => {
-      if (field === "txId" && formData.paymentOption === "pay-now") return;
+      if (field === "txId" && formData.paymentOption === "pay-at-event") return;
       
       const error = validateField(field, formData[field]);
       if (error) {
@@ -303,7 +303,7 @@ export default function RegistrationForm() {
                       options={[{value: "pay-now", label: "Pay Now"}, {value: "pay-at-event", label: "Pay At Event"}]}
                     />
 
-                    {formData.paymentOption === "pay-at-event" && (
+                    {formData.paymentOption === "pay-now" && (
                       <div className="mt-4 animate-fade-up">
                         <FormField 
                           label="Transaction ID / Receipt No." name="txId" type="text" placeholder="Enter details if any" 
