@@ -173,13 +173,13 @@ export default function RegistrationForm() {
   }
 
   return (
-    <div className="w-full max-w-[1000px] mx-auto overflow-hidden">
+    <div className="w-full max-w-[1800px] mx-auto overflow-hidden">
 
       {/* Header section (shared) */}
       <div className="mb-10 text-center md:text-left">
         <p className="eyebrow mb-2">Join Us</p>
         <h3 className="heading-display text-4xl md:text-5xl mb-2">Register Now</h3>
-        <p className="text-[var(--text-muted)] text-sm">Secure your spot for ORAH</p>
+        <p className="text-[var(--text-muted)] text-sm">Secure your spot for VERITAS</p>
       </div>
 
       <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-card)] shadow-[var(--shadow-gold)] overflow-hidden">
@@ -193,23 +193,26 @@ export default function RegistrationForm() {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} noValidate className="relative min-h-[500px]">
+        <form onSubmit={handleSubmit} noValidate className="relative flex flex-col min-h-[500px]">
 
-          <div className="flex w-[200%] md:w-full transition-transform duration-500 ease-in-out h-full"
+          <div className="flex md:grid md:grid-cols-[1fr_auto_1fr] w-[200%] md:w-full transition-transform duration-500 ease-in-out flex-grow"
             style={isMobile ? { transform: `translateX(-${(step - 1) * 50}%)` } : {}}>
 
             {/* --- COLUMN / STEP 1: Personal Info --- */}
-            <div className="w-1/2 md:w-[45%] p-6 md:p-10 shrink-0 h-full flex flex-col justify-between">
+            <div className="w-1/2 md:w-full p-6 lg:p-12 shrink-0 flex flex-col justify-between">
               <div>
-                <h4 className="text-lg font-semibold text-[var(--gold)] mb-6 md:mb-8 font-display tracking-wide uppercase">01 / Personal Details</h4>
+                <div className="flex items-center gap-3 mb-8">
+                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[var(--gold-muted)] text-[#0d0a05] text-xs font-bold">1</span>
+                  <h4 className="text-lg font-semibold text-[var(--gold)] font-display tracking-wide uppercase">Personal Details</h4>
+                </div>
 
-                <div className="space-y-5">
+                <div className="space-y-6">
                   <FormField
                     label="Full Name" name="name" type="text" placeholder="John Doe"
                     value={formData.name} onChange={handleChange} onBlur={handleBlur} error={errors.name} touched={touched.name}
                   />
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
                     <FormField
                       label="Date of Birth" name="dob" type="date" placeholder="DD/MM/YYYY"
                       value={formData.dob} onChange={handleChange} onBlur={handleBlur} error={errors.dob} touched={touched.dob}
@@ -220,7 +223,7 @@ export default function RegistrationForm() {
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
                     <FormField
                       label="Phone Number" name="phone" type="tel" placeholder="+91 90000 00000"
                       value={formData.phone} onChange={handleChange} onBlur={handleBlur} error={errors.phone} touched={touched.phone}
@@ -240,25 +243,27 @@ export default function RegistrationForm() {
 
               {/* Mobile Next Button */}
               <div className="md:hidden mt-10">
-                <button type="button" onClick={handleNext} className="btn-fill-gold flex items-center justify-center gap-2 group w-full py-4 text-[0.8rem]">
+                <button type="button" onClick={handleNext} className="btn-fill-gold flex items-center justify-center gap-2 group w-full py-4 text-[0.9rem] font-semibold">
                   Continue <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
             </div>
 
             {/* --- DESKTOP SEPARATOR --- */}
-            <div className="hidden md:flex w-[10%] shrink-0 justify-center py-10 relative">
-              <div className="absolute top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-[var(--gold-muted)] to-transparent opacity-30"></div>
-              <div className="w-[1px] bg-[var(--border-subtle)] h-full"></div>
+            <div className="hidden md:flex justify-center py-12 relative">
+              <div className="w-px bg-gradient-to-b from-transparent via-[var(--border-subtle)] to-transparent h-full"></div>
             </div>
 
             {/* --- COLUMN / STEP 2: Church, Parent, Payment --- */}
-            <div className="w-1/2 md:w-[45%] p-6 md:p-10 shrink-0 h-full flex flex-col justify-between bg-[var(--bg-secondary)] md:bg-transparent">
+            <div className="w-1/2 md:w-full p-6 lg:p-12 shrink-0 flex flex-col justify-between bg-[var(--bg-secondary)] md:bg-transparent">
               <div>
-                <h4 className="text-lg font-semibold text-[var(--gold)] mb-6 md:mb-8 font-display tracking-wide uppercase">02 / Additional Info</h4>
+                <div className="flex items-center gap-3 mb-8">
+                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[var(--gold-muted)] text-[#0d0a05] text-xs font-bold">2</span>
+                  <h4 className="text-lg font-semibold text-[var(--gold)] font-display tracking-wide uppercase">Additional Info</h4>
+                </div>
 
-                <div className="space-y-5">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="space-y-6">
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
                     <FormField
                       label="Parish Name" name="parish" type="text" placeholder="St. Mary's Church"
                       value={formData.parish} onChange={handleChange} onBlur={handleBlur} error={errors.parish} touched={touched.parish}
@@ -269,7 +274,7 @@ export default function RegistrationForm() {
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
                     <FormField
                       label="Parent Name" name="parentName" type="text" placeholder="Parent's Full Name"
                       value={formData.parentName} onChange={handleChange} onBlur={handleBlur} error={errors.parentName} touched={touched.parentName}
@@ -279,46 +284,59 @@ export default function RegistrationForm() {
                       value={formData.parentPhone} onChange={handleChange} onBlur={handleBlur} error={errors.parentPhone} touched={touched.parentPhone}
                     />
                   </div>
-
-
                 </div>
               </div>
 
-              <div className="mt-8 space-y-6">
-                <label className="flex items-start gap-3 cursor-pointer group">
+              <div className="mt-10 space-y-8">
+                <label className="flex items-start gap-4 cursor-pointer group p-4 border border-[var(--border-subtle)] rounded-lg bg-[var(--bg)] hover:border-[var(--gold-muted)] transition-colors">
                   <div className="relative flex items-center justify-center shrink-0 mt-0.5">
                     <input
                       type="checkbox" name="confirmed"
                       checked={formData.confirmed} onChange={handleChange} onBlur={handleBlur}
-                      className="peer appearance-none w-5 h-5 border border-[var(--input-border)] rounded-sm bg-[var(--input-bg)] checked:bg-[var(--gold-muted)] checked:border-[var(--gold-muted)] transition-colors cursor-pointer"
+                      className="peer appearance-none w-5 h-5 border border-[var(--input-border)] rounded bg-[var(--input-bg)] checked:bg-[var(--gold-muted)] checked:border-[var(--gold-muted)] transition-colors cursor-pointer"
                     />
                     <Check className="absolute w-3 h-3 text-[var(--bg-card)] opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" strokeWidth={3} />
                   </div>
                   <div>
-                    <span className="text-xs text-[var(--text-muted)] group-hover:text-[var(--text)] transition-colors">I confirm that all the details provided above are correct.</span>
+                    <span className="text-sm text-[var(--text)] font-medium">Information Confirmation</span>
+                    <p className="text-xs text-[var(--text-muted)] mt-1">I confirm that all the details provided above are accurate and true to my knowledge.</p>
                     {touched.confirmed && errors.confirmed && (
-                      <p className="text-[var(--destructive)] text-[0.65rem] mt-1">{errors.confirmed}</p>
+                      <p className="text-[var(--destructive)] text-xs mt-2">{errors.confirmed}</p>
                     )}
                   </div>
                 </label>
 
-                <div className="flex gap-4">
-                  {/* Mobile Back Button */}
-                  <button type="button" onClick={handleBack} className="md:hidden btn-outline-gold flex-1 flex items-center justify-center gap-2 group py-4 text-[0.8rem]">
+                {/* Mobile buttons */}
+                <div className="flex gap-4 md:hidden">
+                  <button type="button" onClick={handleBack} className="btn-outline-gold flex-1 flex items-center justify-center gap-2 group py-4 text-[0.9rem] font-semibold">
                     <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back
                   </button>
 
                   <button
                     type="submit"
                     disabled={!formData.confirmed || Object.values(errors).some(e => e !== "")}
-                    className="btn-fill-gold flex-1 flex items-center justify-center gap-2 group py-4 text-[0.8rem] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[var(--gold-muted)] disabled:hover:text-[#0d0a05] disabled:hover:border-[var(--gold-muted)]"
+                    className="btn-fill-gold flex-1 flex items-center justify-center gap-2 group py-4 text-[0.9rem] font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Submit Registration <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    Submit <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </div>
               </div>
-
             </div>
+          </div>
+
+          {/* Desktop Footer Submit Button */}
+          <div className="hidden md:flex items-center justify-between p-8 lg:px-12 border-t border-[var(--border-subtle)] bg-[var(--bg-secondary)]">
+            <div>
+              <h5 className="text-sm font-semibold text-[var(--text)] uppercase tracking-wider mb-1">Ready to Register?</h5>
+              <p className="text-xs text-[var(--text-muted)]">Please review your information before final submission.</p>
+            </div>
+            <button
+              type="submit"
+              disabled={!formData.confirmed || Object.values(errors).some(e => e !== "")}
+              className="btn-fill-gold flex items-center justify-center gap-2 group px-8 py-4 text-[0.9rem] font-semibold rounded disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none"
+            >
+              Submit Registration <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </button>
           </div>
         </form>
       </div>
