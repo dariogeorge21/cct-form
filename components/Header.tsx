@@ -114,7 +114,7 @@ export default function Header() {
             transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
           }}
         >
-          <div className="container-veritas">
+          <div className="container-orah">
             <div
               style={{
                 display: "flex",
@@ -184,7 +184,7 @@ export default function Header() {
                         lineHeight: 1,
                       }}
                     >
-                      VERITAS
+                      ORAH
                     </span>
                     <span
                       style={{
@@ -514,7 +514,7 @@ export default function Header() {
               letterSpacing: "0.2em",
             }}
           >
-            REGISTER FOR VERITAS
+            REGISTER FOR ORAH
           </a>
 
           <p
@@ -527,7 +527,7 @@ export default function Header() {
               marginTop: "0.5rem",
             }}
           >
-            JESUS YOUTH PALA • VERITAS 2026
+            JESUS YOUTH PALA • ORAH 2026
           </p>
         </div>
       </div>

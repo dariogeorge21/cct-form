@@ -6,7 +6,7 @@ import RegistrationForm from "@/components/RegistrationForm";
 import EventInfoStrip from "@/components/EventInfoStrip";
 import Footer from "@/components/Footer";
 
-// ─── VERITAS 2026 — Main Page ─────────────────────────────────────────────────
+// ─── ORAH 2026 — Main Page ─────────────────────────────────────────────────
 // Component hierarchy:
 //   Header                 (sleek sticky Awwwards glassmorphic navigation header)
 //   HeroPlaceholder        (full-viewport framed hero wallpaper)
@@ -38,12 +38,12 @@ export default function Home() {
           borderBottom: "1px solid var(--border-subtle)",
         }}
       >
-        <div className="container-veritas">
+        <div className="container-orah">
           <CountdownTimer />
         </div>
       </section>
 
-      {/* 3. About VERITAS */}
+      {/* 3. About ORAH */}
       <AboutSection />
 
       {/* Thin divider */}
@@ -55,7 +55,7 @@ export default function Home() {
         aria-label="Registration"
         style={{ backgroundColor: "var(--bg)", padding: "5rem 0" }}
       >
-        <div className="container-veritas">
+        <div className="container-orah">
           <div
             style={{
               maxWidth: "540px",

@@ -121,7 +121,7 @@ export default function EventInfoStrip() {
         padding: "1.75rem 0",
       }}
     >
-      <div className="container-veritas">
+      <div className="container-orah">
         <div
           className="info-strip-grid"
           style={{

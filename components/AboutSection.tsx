@@ -2,7 +2,7 @@
 
 // ─── AboutSection ─────────────────────────────────────────────────────────────
 // Two-column layout: editorial copy on the left, 3 feature cards on the right.
-// Matches the "ABOUT VERITAS" section from the reference image.
+// Matches the "ABOUT ORAH" section from the reference image.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import Image from "next/image";
@@ -49,13 +49,13 @@ export default function AboutSection() {
   return (
     <section
       id="about"
-      aria-label="About VERITAS"
+      aria-label="About ORAH"
       style={{
         backgroundColor: "var(--bg)",
         padding: "5rem 0 4.5rem",
       }}
     >
-      <div className="container-veritas">
+      <div className="container-orah">
         <div
           style={{
             display: "grid",
@@ -68,7 +68,7 @@ export default function AboutSection() {
           {/* ── Left Column: Editorial Copy ── */}
           <div className="about-copy">
             <p className="eyebrow" style={{ marginBottom: "1.1rem" }}>
-              About Veritas
+              About Orah
             </p>
 
             <h2
@@ -95,7 +95,7 @@ export default function AboutSection() {
                 marginBottom: "2rem",
               }}
             >
-              VERITAS is more than an event—it&apos;s a divine encounter. Four
+              ORAH is more than an event—it&apos;s a divine encounter. Four
               days to seek the truth, be renewed in His presence, and rise as
               witnesses of His love in the world.
             </p>

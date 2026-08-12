@@ -134,7 +134,7 @@ export default function Footer() {
     >
       {/* ── Main Footer Body ── */}
       <div
-        className="container-veritas"
+        className="container-orah"
         style={{ padding: "5rem 2rem 3.5rem" }}
       >
         <div
@@ -170,7 +170,7 @@ export default function Footer() {
                     display: "block",
                   }}
                 >
-                  VERITAS 2026
+                  ORAH 2026
                 </span>
                 <span
                   style={{
@@ -197,7 +197,7 @@ export default function Footer() {
                 fontWeight: 400,
               }}
             >
-              VERITAS is an initiative of Jesus Youth Pala to bring young
+              ORAH is an initiative of Jesus Youth Pala to bring young
               hearts closer to Christ through worship, the Word, community,
               and mission.
             </p>
@@ -330,7 +330,7 @@ export default function Footer() {
         }}
       >
         <div
-          className="container-veritas"
+          className="container-orah"
           style={{
             display: "flex",
             alignItems: "center",

@@ -179,7 +179,7 @@ export default function RegistrationForm() {
       <div className="mb-10 text-center md:text-left">
         <p className="eyebrow mb-2">Join Us</p>
         <h3 className="heading-display text-4xl md:text-5xl mb-2">Register Now</h3>
-        <p className="text-[var(--text-muted)] text-sm">Secure your spot for VERITAS</p>
+        <p className="text-[var(--text-muted)] text-sm">Secure your spot for ORAH</p>
       </div>
 
       <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-card)] shadow-[var(--shadow-gold)] overflow-hidden">
