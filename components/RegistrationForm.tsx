@@ -14,8 +14,6 @@ type FormData = {
   diocese: string;
   parentName: string;
   parentPhone: string;
-  paymentOption: string;
-  txId: string;
   confirmed: boolean;
 };
 
@@ -26,7 +24,7 @@ export default function RegistrationForm() {
   const [step, setStep] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  
+
   const [formData, setFormData] = useState<FormData>({
     name: "",
     dob: "",
@@ -38,8 +36,6 @@ export default function RegistrationForm() {
     diocese: "",
     parentName: "",
     parentPhone: "",
-    paymentOption: "pay-now",
-    txId: "",
     confirmed: false,
   });
 
@@ -54,7 +50,7 @@ export default function RegistrationForm() {
   }, []);
 
   const validateField = (name: keyof FormData, value: string | boolean): string => {
-    if (typeof value === "string" && value.trim() === "" && name !== "txId") {
+    if (typeof value === "string" && value.trim() === "") {
       if (name === "confirmed") return ""; // handled separately
       return "This field is required.";
     }
@@ -65,11 +61,6 @@ export default function RegistrationForm() {
       case "phone":
       case "parentPhone":
         return /^\+?[\d\s-]{10,}$/.test(value as string) ? "" : "Enter a valid phone number.";
-      case "txId":
-        if (formData.paymentOption === "pay-now" && (value as string).trim() === "") {
-          return "Transaction ID is required for Pay Now.";
-        }
-        return "";
       case "confirmed":
         return value === true ? "" : "You must confirm to proceed.";
       default:
@@ -81,9 +72,9 @@ export default function RegistrationForm() {
     const { name, value, type } = e.target;
     const isCheckbox = type === "checkbox";
     const val = isCheckbox ? (e.target as HTMLInputElement).checked : value;
-    
+
     setFormData((prev) => ({ ...prev, [name]: val }));
-    
+
     if (touched[name as keyof FormData]) {
       setErrors((prev) => ({
         ...prev,
@@ -108,7 +99,7 @@ export default function RegistrationForm() {
     const step1Fields: (keyof FormData)[] = ["name", "dob", "phone", "email", "gender", "yearOfStudy"];
     const newErrors: FormErrors = {};
     let isValid = true;
-    
+
     step1Fields.forEach((field) => {
       const error = validateField(field, formData[field]);
       if (error) {
@@ -122,18 +113,16 @@ export default function RegistrationForm() {
       const newTouched = step1Fields.reduce((acc, field) => ({ ...acc, [field]: true }), {});
       setTouched((prev) => ({ ...prev, ...newTouched }));
     }
-    
+
     return isValid;
   };
 
   const validateStep2 = () => {
-    const step2Fields: (keyof FormData)[] = ["parish", "diocese", "parentName", "parentPhone", "txId", "confirmed"];
+    const step2Fields: (keyof FormData)[] = ["parish", "diocese", "parentName", "parentPhone", "confirmed"];
     const newErrors: FormErrors = {};
     let isValid = true;
 
     step2Fields.forEach((field) => {
-      if (field === "txId" && formData.paymentOption === "pay-at-event") return;
-      
       const error = validateField(field, formData[field]);
       if (error) {
         newErrors[field] = error;
@@ -185,7 +174,7 @@ export default function RegistrationForm() {
 
   return (
     <div className="w-full max-w-[1000px] mx-auto overflow-hidden">
-      
+
       {/* Header section (shared) */}
       <div className="mb-10 text-center md:text-left">
         <p className="eyebrow mb-2">Join Us</p>
@@ -194,7 +183,7 @@ export default function RegistrationForm() {
       </div>
 
       <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-card)] shadow-[var(--shadow-gold)] overflow-hidden">
-        
+
         {/* Mobile Progress Indicator */}
         <div className="md:hidden flex items-center justify-between px-6 py-4 border-b border-[var(--border-subtle)]">
           <span className="eyebrow">Step {step} of 2</span>
@@ -205,46 +194,46 @@ export default function RegistrationForm() {
         </div>
 
         <form onSubmit={handleSubmit} noValidate className="relative min-h-[500px]">
-          
+
           <div className="flex w-[200%] md:w-full transition-transform duration-500 ease-in-out h-full"
-               style={isMobile ? { transform: `translateX(-${(step - 1) * 50}%)` } : {}}>
-            
+            style={isMobile ? { transform: `translateX(-${(step - 1) * 50}%)` } : {}}>
+
             {/* --- COLUMN / STEP 1: Personal Info --- */}
             <div className="w-1/2 md:w-[45%] p-6 md:p-10 shrink-0 h-full flex flex-col justify-between">
               <div>
                 <h4 className="text-lg font-semibold text-[var(--gold)] mb-6 md:mb-8 font-display tracking-wide uppercase">01 / Personal Details</h4>
-                
+
                 <div className="space-y-5">
-                  <FormField 
-                    label="Full Name" name="name" type="text" placeholder="John Doe" 
-                    value={formData.name} onChange={handleChange} onBlur={handleBlur} error={errors.name} touched={touched.name} 
+                  <FormField
+                    label="Full Name" name="name" type="text" placeholder="John Doe"
+                    value={formData.name} onChange={handleChange} onBlur={handleBlur} error={errors.name} touched={touched.name}
                   />
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <FormField 
-                      label="Date of Birth" name="dob" type="date" placeholder="DD/MM/YYYY" 
-                      value={formData.dob} onChange={handleChange} onBlur={handleBlur} error={errors.dob} touched={touched.dob} 
+                    <FormField
+                      label="Date of Birth" name="dob" type="date" placeholder="DD/MM/YYYY"
+                      value={formData.dob} onChange={handleChange} onBlur={handleBlur} error={errors.dob} touched={touched.dob}
                     />
-                    <FormSelect 
+                    <FormSelect
                       label="Gender" name="gender" value={formData.gender} onChange={handleChange} onBlur={handleBlur} error={errors.gender} touched={touched.gender}
-                      options={[{value: "male", label: "Male"}, {value: "female", label: "Female"}, {value: "other", label: "Other"}]}
+                      options={[{ value: "male", label: "Male" }, { value: "female", label: "Female" }]}
                     />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <FormField 
-                      label="Phone Number" name="phone" type="tel" placeholder="+91 90000 00000" 
-                      value={formData.phone} onChange={handleChange} onBlur={handleBlur} error={errors.phone} touched={touched.phone} 
+                    <FormField
+                      label="Phone Number" name="phone" type="tel" placeholder="+91 90000 00000"
+                      value={formData.phone} onChange={handleChange} onBlur={handleBlur} error={errors.phone} touched={touched.phone}
                     />
-                    <FormField 
-                      label="Email Address" name="email" type="email" placeholder="john@example.com" 
-                      value={formData.email} onChange={handleChange} onBlur={handleBlur} error={errors.email} touched={touched.email} 
+                    <FormField
+                      label="Email Address" name="email" type="email" placeholder="john@example.com"
+                      value={formData.email} onChange={handleChange} onBlur={handleBlur} error={errors.email} touched={touched.email}
                     />
                   </div>
 
-                  <FormField 
-                    label="Year of Study" name="yearOfStudy" type="text" placeholder="e.g. 1st Year B.Tech" 
-                    value={formData.yearOfStudy} onChange={handleChange} onBlur={handleBlur} error={errors.yearOfStudy} touched={touched.yearOfStudy} 
+                  <FormField
+                    label="Year of Study" name="yearOfStudy" type="text" placeholder="e.g. 1st Year B.Tech"
+                    value={formData.yearOfStudy} onChange={handleChange} onBlur={handleBlur} error={errors.yearOfStudy} touched={touched.yearOfStudy}
                   />
                 </div>
               </div>
@@ -267,59 +256,39 @@ export default function RegistrationForm() {
             <div className="w-1/2 md:w-[45%] p-6 md:p-10 shrink-0 h-full flex flex-col justify-between bg-[var(--bg-secondary)] md:bg-transparent">
               <div>
                 <h4 className="text-lg font-semibold text-[var(--gold)] mb-6 md:mb-8 font-display tracking-wide uppercase">02 / Additional Info</h4>
-                
+
                 <div className="space-y-5">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <FormField 
-                      label="Parish Name" name="parish" type="text" placeholder="St. Mary's Church" 
-                      value={formData.parish} onChange={handleChange} onBlur={handleBlur} error={errors.parish} touched={touched.parish} 
+                    <FormField
+                      label="Parish Name" name="parish" type="text" placeholder="St. Mary's Church"
+                      value={formData.parish} onChange={handleChange} onBlur={handleBlur} error={errors.parish} touched={touched.parish}
                     />
-                    <FormField 
-                      label="Diocese Name" name="diocese" type="text" placeholder="Pala" 
-                      value={formData.diocese} onChange={handleChange} onBlur={handleBlur} error={errors.diocese} touched={touched.diocese} 
+                    <FormField
+                      label="Diocese Name" name="diocese" type="text" placeholder="Pala"
+                      value={formData.diocese} onChange={handleChange} onBlur={handleBlur} error={errors.diocese} touched={touched.diocese}
                     />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <FormField 
-                      label="Parent Name" name="parentName" type="text" placeholder="Parent's Full Name" 
-                      value={formData.parentName} onChange={handleChange} onBlur={handleBlur} error={errors.parentName} touched={touched.parentName} 
+                    <FormField
+                      label="Parent Name" name="parentName" type="text" placeholder="Parent's Full Name"
+                      value={formData.parentName} onChange={handleChange} onBlur={handleBlur} error={errors.parentName} touched={touched.parentName}
                     />
-                    <FormField 
-                      label="Parent Phone" name="parentPhone" type="tel" placeholder="+91 90000 00000" 
-                      value={formData.parentPhone} onChange={handleChange} onBlur={handleBlur} error={errors.parentPhone} touched={touched.parentPhone} 
+                    <FormField
+                      label="Parent Phone" name="parentPhone" type="tel" placeholder="+91 90000 00000"
+                      value={formData.parentPhone} onChange={handleChange} onBlur={handleBlur} error={errors.parentPhone} touched={touched.parentPhone}
                     />
                   </div>
 
-                  {/* Payment Section */}
-                  <div className="mt-8 p-5 border border-[var(--border-subtle)] rounded-md bg-[var(--bg)]">
-                    <div className="flex justify-between items-center mb-4">
-                      <span className="text-sm font-semibold tracking-wider text-[var(--text)] uppercase">Registration Fee</span>
-                      <span className="text-lg font-display text-[var(--gold)] font-bold tracking-widest">₹800</span>
-                    </div>
 
-                    <FormSelect 
-                      label="Payment Method" name="paymentOption" value={formData.paymentOption} onChange={handleChange} onBlur={handleBlur} 
-                      options={[{value: "pay-now", label: "Pay Now"}, {value: "pay-at-event", label: "Pay At Event"}]}
-                    />
-
-                    {formData.paymentOption === "pay-now" && (
-                      <div className="mt-4 animate-fade-up">
-                        <FormField 
-                          label="Transaction ID / Receipt No." name="txId" type="text" placeholder="Enter details if any" 
-                          value={formData.txId} onChange={handleChange} onBlur={handleBlur} error={errors.txId} touched={touched.txId} 
-                        />
-                      </div>
-                    )}
-                  </div>
                 </div>
               </div>
 
               <div className="mt-8 space-y-6">
                 <label className="flex items-start gap-3 cursor-pointer group">
                   <div className="relative flex items-center justify-center shrink-0 mt-0.5">
-                    <input 
-                      type="checkbox" name="confirmed" 
+                    <input
+                      type="checkbox" name="confirmed"
                       checked={formData.confirmed} onChange={handleChange} onBlur={handleBlur}
                       className="peer appearance-none w-5 h-5 border border-[var(--input-border)] rounded-sm bg-[var(--input-bg)] checked:bg-[var(--gold-muted)] checked:border-[var(--gold-muted)] transition-colors cursor-pointer"
                     />
@@ -339,8 +308,8 @@ export default function RegistrationForm() {
                     <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back
                   </button>
 
-                  <button 
-                    type="submit" 
+                  <button
+                    type="submit"
                     disabled={!formData.confirmed || Object.values(errors).some(e => e !== "")}
                     className="btn-fill-gold flex-1 flex items-center justify-center gap-2 group py-4 text-[0.8rem] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[var(--gold-muted)] disabled:hover:text-[#0d0a05] disabled:hover:border-[var(--gold-muted)]"
                   >
@@ -373,7 +342,7 @@ type FieldProps = {
 
 function FormField({ label, name, type = "text", placeholder, value, onChange, onBlur, error, touched }: FieldProps) {
   const hasError = touched && error;
-  
+
   return (
     <div className="flex flex-col relative">
       <label htmlFor={name} className="text-[0.65rem] uppercase tracking-wider text-[var(--text-dim)] mb-1.5 font-semibold">
@@ -391,7 +360,7 @@ function FormField({ label, name, type = "text", placeholder, value, onChange, o
   );
 }
 
-function FormSelect({ label, name, value, onChange, onBlur, error, touched, options }: FieldProps & { options: {value: string, label: string}[] }) {
+function FormSelect({ label, name, value, onChange, onBlur, error, touched, options }: FieldProps & { options: { value: string, label: string }[] }) {
   const hasError = touched && error;
 
   return (
@@ -411,7 +380,7 @@ function FormSelect({ label, name, value, onChange, onBlur, error, touched, opti
         </select>
         <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[var(--gold-muted)]">
           <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
       </div>
