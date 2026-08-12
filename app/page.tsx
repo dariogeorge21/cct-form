@@ -58,7 +58,7 @@ export default function Home() {
         <div className="container-orah">
           <div
             style={{
-              maxWidth: "540px",
+              maxWidth: "2048px",
               margin: "0 auto",
             }}
           >
