@@ -14,19 +14,7 @@ export default function HeroPlaceholder() {
     <section
       id="hero"
       aria-label="Hero Banner"
-      style={{
-        width: "100%",
-        height: "99dvh",
-        minHeight: "640px",
-        backgroundColor: "#03090d",
-        position: "relative",
-        overflow: "hidden",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "flex-end",
-        paddingBottom: "2.5rem",
-      }}
+      className="hero-section"
     >
       {/* ── Framed Desktop & Mobile Background Layer with 4-Side Margins ── */}
       <div className="hero-bg-layer">
@@ -87,23 +75,34 @@ export default function HeroPlaceholder() {
         />
       </a>
 
-      {/* ── Responsive CSS styling for mobile & desktop framed backgrounds ── */}
+      {/* ── Responsive CSS styling for mobile & desktop backgrounds ── */}
       <style jsx>{`
+        .hero-section {
+          width: 100%;
+          aspect-ratio: 16 / 9;
+          min-height: 640px;
+          background-color: #03090d;
+          position: relative;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-end;
+          padding-bottom: 2.5rem;
+        }
+
         .hero-bg-layer {
           position: absolute;
-          top: 6.75rem;
-          bottom: 2.5rem;
-          left: 4.5rem;
-          right: 4.5rem;
-          max-width: 1160px;
-          margin: 0 auto;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          width: 100%;
+          height: 100%;
           background-image: url('/HeroDesktop.png');
           background-size: cover;
           background-position: center center;
           background-repeat: no-repeat;
-          border-radius: 16px;
-          border: 1px solid var(--border-subtle);
-          overflow: hidden;
           z-index: 1;
         }
 
@@ -112,17 +111,9 @@ export default function HeroPlaceholder() {
           transform: translateY(3px);
         }
 
-        @media (max-width: 1100px) {
-          .hero-bg-layer {
-            top: 6.5rem;
-            bottom: 2rem;
-            left: 2.5rem;
-            right: 2.5rem;
-          }
-        }
-
         @media (max-width: 768px) {
-          #hero {
+          .hero-section {
+            aspect-ratio: auto;
             height: 82dvh !important;
             min-height: 480px !important;
             padding-bottom: 1.5rem !important;
@@ -132,10 +123,13 @@ export default function HeroPlaceholder() {
             bottom: 1.25rem;
             left: 1.25rem;
             right: 1.25rem;
+            width: auto;
+            height: auto;
             background-image: url('/HeroMobile.png');
             background-position: center top;
             background-size: cover;
             border-radius: 12px;
+            border: 1px solid var(--border-subtle);
           }
         }
       `}</style>
