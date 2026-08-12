@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Menu, X, ChevronRight, Calendar, MapPin } from "lucide-react";
+import Image from "next/image";
 
 // ─── Header Component ────────────────────────────────────────────────────────
 // Awwwards-level minimal, editorial, and ultra-polished sticky navigation bar
@@ -148,19 +149,13 @@ export default function Header() {
                   }}
                   className="brand-emblem"
                 >
-                  <span
-                    style={{
-                      fontFamily:
-                        "var(--font-barlow-condensed), 'Barlow Condensed', sans-serif",
-                      fontWeight: 800,
-                      fontSize: "0.9rem",
-                      letterSpacing: "0.08em",
-                      color: "var(--gold-bright)",
-                      lineHeight: 1,
-                    }}
-                  >
-                    JY
-                  </span>
+                  <Image
+                    src="/jyLogo.png"
+                    alt="Jesus Youth Logo"
+                    width={100}
+                    height={100}
+                    style={{ objectFit: "contain" }}
+                  />
                 </div>
 
                 {/* Editorial Typography Name */}
