@@ -217,6 +217,17 @@ export default function RegistrationForm() {
         <p className="text-[var(--text-muted)] text-sm max-w-md mx-auto">
           Thank you for registering. We have received your details and will be in touch with further information soon.
         </p>
+
+        {/* Support Contact */}
+        <div className="mt-8 flex flex-col items-center p-4 px-6 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg)] max-w-lg mx-auto">
+          <p className="text-xs text-[var(--text-muted)] text-center mb-2">
+            For any event related details or errors in submission, please contact:
+          </p>
+          <div className="text-sm font-medium text-[var(--text)] text-center">
+            Sebin Jo Saji <span className="mx-2 text-[var(--border-subtle)]">|</span> <a href="tel:+919400389831" className="text-[var(--gold-muted)] hover:text-[var(--gold)] transition-colors">+91 94003 89831</a>
+          </div>
+        </div>
+
       </div>
     );
   }
@@ -427,6 +438,16 @@ export default function RegistrationForm() {
             </button>
           </div>
         </form>
+      </div>
+
+      {/* Support Contact */}
+      <div className="mt-6 flex flex-col md:flex-row items-center justify-between p-4 px-6 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] max-w-3xl mx-auto">
+        <p className="text-xs text-[var(--text-muted)] text-center md:text-left mb-2 md:mb-0">
+          For any event related details or errors in submission, please contact:
+        </p>
+        <div className="text-sm font-medium text-[var(--text)] text-center md:text-right">
+          Sebin Jo Saji <span className="mx-2 text-[var(--border-subtle)]">|</span> <a href="tel:+919400389831" className="text-[var(--gold-muted)] hover:text-[var(--gold)] transition-colors">+91 94003 89831</a>
+        </div>
       </div>
     </div>
   );
