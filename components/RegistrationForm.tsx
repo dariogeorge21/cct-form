@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ArrowRight, ArrowLeft, Check } from "lucide-react";
+import { ArrowRight, ArrowLeft, Check, Loader2, AlertCircle } from "lucide-react";
 
 type FormData = {
   name: string;
@@ -24,6 +24,8 @@ export default function RegistrationForm() {
   const [step, setStep] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -57,10 +59,21 @@ export default function RegistrationForm() {
 
     switch (name) {
       case "email":
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value as string) ? "" : "Enter a valid email address.";
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value as string)
+          ? ""
+          : "Enter a valid email address.";
       case "phone":
       case "parentPhone":
-        return /^\+?[\d\s-]{10,}$/.test(value as string) ? "" : "Enter a valid phone number.";
+        return /^\+?[\d\s\-]{10,}$/.test(value as string)
+          ? ""
+          : "Enter a valid phone number.";
+      case "dob": {
+        const year = new Date(value as string).getFullYear();
+        if (isNaN(year)) return "Enter a valid date.";
+        if (year < 1995 || year > 2015)
+          return "Date of birth must be between 1995 and 2015.";
+        return "";
+      }
       case "confirmed":
         return value === true ? "" : "You must confirm to proceed.";
       default:
@@ -74,6 +87,8 @@ export default function RegistrationForm() {
     const val = isCheckbox ? (e.target as HTMLInputElement).checked : value;
 
     setFormData((prev) => ({ ...prev, [name]: val }));
+    // Clear server-side error whenever user edits the form
+    if (submitError) setSubmitError(null);
 
     if (touched[name as keyof FormData]) {
       setErrors((prev) => ({
@@ -150,10 +165,44 @@ export default function RegistrationForm() {
     setStep(1);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateStep1() && validateStep2()) {
-      setSubmitted(true);
+    setSubmitError(null);
+
+    if (!validateStep1() || !validateStep2()) return;
+
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        setSubmitted(true);
+        return;
+      }
+
+      // Map known error codes to user-friendly messages
+      if (result.code === "DUPLICATE_EMAIL") {
+        setSubmitError("This email address is already registered for this event.");
+      } else if (result.code === "EVENT_CLOSED") {
+        setSubmitError("Registrations are currently closed. Please check back later.");
+      } else if (result.code === "EVENT_FULL") {
+        setSubmitError("Registrations are full. No more spots are available.");
+      } else if (response.status === 400 && result.fieldErrors) {
+        setSubmitError("Some fields are invalid. Please review your details and try again.");
+      } else {
+        setSubmitError(result.error ?? "Something went wrong. Please try again.");
+      }
+    } catch {
+      setSubmitError("Network error. Please check your connection and try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -172,6 +221,8 @@ export default function RegistrationForm() {
     );
   }
 
+  const isSubmitDisabled = isLoading || !formData.confirmed || Object.values(errors).some((e) => e !== "");
+
   return (
     <div className="w-full max-w-[1800px] mx-auto overflow-hidden">
 
@@ -179,7 +230,7 @@ export default function RegistrationForm() {
       <div className="mb-10 text-center md:text-left">
         <p className="eyebrow mb-2">Join Us</p>
         <h3 className="heading-display text-4xl md:text-5xl mb-2">Register Now</h3>
-        <p className="text-[var(--text-muted)] text-sm">Secure your spot for VERITAS</p>
+        <p className="text-[var(--text-muted)] text-sm">Secure your spot for ORAH 2026</p>
       </div>
 
       <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-card)] shadow-[var(--shadow-gold)] overflow-hidden">
@@ -210,16 +261,19 @@ export default function RegistrationForm() {
                   <FormField
                     label="Full Name" name="name" type="text" placeholder="John Doe"
                     value={formData.name} onChange={handleChange} onBlur={handleBlur} error={errors.name} touched={touched.name}
+                    disabled={isLoading}
                   />
 
                   <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
                     <FormField
                       label="Date of Birth" name="dob" type="date" placeholder="DD/MM/YYYY"
                       value={formData.dob} onChange={handleChange} onBlur={handleBlur} error={errors.dob} touched={touched.dob}
+                      disabled={isLoading}
                     />
                     <FormSelect
                       label="Gender" name="gender" value={formData.gender} onChange={handleChange} onBlur={handleBlur} error={errors.gender} touched={touched.gender}
                       options={[{ value: "male", label: "Male" }, { value: "female", label: "Female" }]}
+                      disabled={isLoading}
                     />
                   </div>
 
@@ -227,23 +281,26 @@ export default function RegistrationForm() {
                     <FormField
                       label="Phone Number" name="phone" type="tel" placeholder="+91 90000 00000"
                       value={formData.phone} onChange={handleChange} onBlur={handleBlur} error={errors.phone} touched={touched.phone}
+                      disabled={isLoading}
                     />
                     <FormField
                       label="Email Address" name="email" type="email" placeholder="john@example.com"
                       value={formData.email} onChange={handleChange} onBlur={handleBlur} error={errors.email} touched={touched.email}
+                      disabled={isLoading}
                     />
                   </div>
 
                   <FormField
                     label="Year of Study" name="yearOfStudy" type="text" placeholder="e.g. 1st Year B.Tech"
                     value={formData.yearOfStudy} onChange={handleChange} onBlur={handleBlur} error={errors.yearOfStudy} touched={touched.yearOfStudy}
+                    disabled={isLoading}
                   />
                 </div>
               </div>
 
               {/* Mobile Next Button */}
               <div className="md:hidden mt-10">
-                <button type="button" onClick={handleNext} className="btn-fill-gold flex items-center justify-center gap-2 group w-full py-4 text-[0.9rem] font-semibold">
+                <button type="button" onClick={handleNext} disabled={isLoading} className="btn-fill-gold flex items-center justify-center gap-2 group w-full py-4 text-[0.9rem] font-semibold disabled:opacity-50 disabled:cursor-not-allowed">
                   Continue <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
@@ -254,7 +311,7 @@ export default function RegistrationForm() {
               <div className="w-px bg-gradient-to-b from-transparent via-[var(--border-subtle)] to-transparent h-full"></div>
             </div>
 
-            {/* --- COLUMN / STEP 2: Church, Parent, Payment --- */}
+            {/* --- COLUMN / STEP 2: Church, Parent Info --- */}
             <div className="w-1/2 md:w-full p-6 lg:p-12 shrink-0 flex flex-col justify-between bg-[var(--bg-secondary)] md:bg-transparent">
               <div>
                 <div className="flex items-center gap-3 mb-8">
@@ -267,10 +324,12 @@ export default function RegistrationForm() {
                     <FormField
                       label="Parish Name" name="parish" type="text" placeholder="St. Mary's Church"
                       value={formData.parish} onChange={handleChange} onBlur={handleBlur} error={errors.parish} touched={touched.parish}
+                      disabled={isLoading}
                     />
                     <FormField
                       label="Diocese Name" name="diocese" type="text" placeholder="Pala"
                       value={formData.diocese} onChange={handleChange} onBlur={handleBlur} error={errors.diocese} touched={touched.diocese}
+                      disabled={isLoading}
                     />
                   </div>
 
@@ -278,21 +337,24 @@ export default function RegistrationForm() {
                     <FormField
                       label="Parent Name" name="parentName" type="text" placeholder="Parent's Full Name"
                       value={formData.parentName} onChange={handleChange} onBlur={handleBlur} error={errors.parentName} touched={touched.parentName}
+                      disabled={isLoading}
                     />
                     <FormField
                       label="Parent Phone" name="parentPhone" type="tel" placeholder="+91 90000 00000"
                       value={formData.parentPhone} onChange={handleChange} onBlur={handleBlur} error={errors.parentPhone} touched={touched.parentPhone}
+                      disabled={isLoading}
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="mt-10 space-y-8">
-                <label className="flex items-start gap-4 cursor-pointer group p-4 border border-[var(--border-subtle)] rounded-lg bg-[var(--bg)] hover:border-[var(--gold-muted)] transition-colors">
+              <div className="mt-10 space-y-6">
+                <label className={`flex items-start gap-4 cursor-pointer group p-4 border border-[var(--border-subtle)] rounded-lg bg-[var(--bg)] hover:border-[var(--gold-muted)] transition-colors ${isLoading ? 'opacity-60 pointer-events-none' : ''}`}>
                   <div className="relative flex items-center justify-center shrink-0 mt-0.5">
                     <input
                       type="checkbox" name="confirmed"
                       checked={formData.confirmed} onChange={handleChange} onBlur={handleBlur}
+                      disabled={isLoading}
                       className="peer appearance-none w-5 h-5 border border-[var(--input-border)] rounded bg-[var(--input-bg)] checked:bg-[var(--gold-muted)] checked:border-[var(--gold-muted)] transition-colors cursor-pointer"
                     />
                     <Check className="absolute w-3 h-3 text-[var(--bg-card)] opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" strokeWidth={3} />
@@ -306,18 +368,35 @@ export default function RegistrationForm() {
                   </div>
                 </label>
 
+                {/* Inline Server Error Banner */}
+                {submitError && (
+                  <div className="flex items-start gap-3 p-4 rounded-lg border border-[var(--destructive)] bg-[var(--destructive)]/10 animate-fade-up">
+                    <AlertCircle className="w-4 h-4 text-[var(--destructive)] shrink-0 mt-0.5" />
+                    <p className="text-[var(--destructive)] text-xs leading-relaxed">{submitError}</p>
+                  </div>
+                )}
+
                 {/* Mobile buttons */}
                 <div className="flex gap-4 md:hidden">
-                  <button type="button" onClick={handleBack} className="btn-outline-gold flex-1 flex items-center justify-center gap-2 group py-4 text-[0.9rem] font-semibold">
+                  <button
+                    type="button"
+                    onClick={handleBack}
+                    disabled={isLoading}
+                    className="btn-outline-gold flex-1 flex items-center justify-center gap-2 group py-4 text-[0.9rem] font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
                     <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back
                   </button>
 
                   <button
                     type="submit"
-                    disabled={!formData.confirmed || Object.values(errors).some(e => e !== "")}
+                    disabled={isSubmitDisabled}
                     className="btn-fill-gold flex-1 flex items-center justify-center gap-2 group py-4 text-[0.9rem] font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Submit <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    {isLoading ? (
+                      <><Loader2 className="w-4 h-4 animate-spin" /> Submitting…</>
+                    ) : (
+                      <>Submit <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></>
+                    )}
                   </button>
                 </div>
               </div>
@@ -328,14 +407,23 @@ export default function RegistrationForm() {
           <div className="hidden md:flex items-center justify-between p-8 lg:px-12 border-t border-[var(--border-subtle)] bg-[var(--bg-secondary)]">
             <div>
               <h5 className="text-sm font-semibold text-[var(--text)] uppercase tracking-wider mb-1">Ready to Register?</h5>
-              <p className="text-xs text-[var(--text-muted)]">Please review your information before final submission.</p>
+              <p className="text-xs text-[var(--text-muted)]">
+                {submitError
+                  ? <span className="text-[var(--destructive)] flex items-center gap-1.5"><AlertCircle className="w-3.5 h-3.5" />{submitError}</span>
+                  : "Please review your information before final submission."
+                }
+              </p>
             </div>
             <button
               type="submit"
-              disabled={!formData.confirmed || Object.values(errors).some(e => e !== "")}
-              className="btn-fill-gold flex items-center justify-center gap-2 group px-8 py-4 text-[0.9rem] font-semibold rounded disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none"
+              disabled={isSubmitDisabled}
+              className="btn-fill-gold flex items-center justify-center gap-2 group px-8 py-4 text-[0.9rem] font-semibold rounded disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none min-w-[200px]"
             >
-              Submit Registration <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              {isLoading ? (
+                <><Loader2 className="w-4 h-4 animate-spin" /> Submitting…</>
+              ) : (
+                <>Submit Registration <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></>
+              )}
             </button>
           </div>
         </form>
@@ -356,9 +444,10 @@ type FieldProps = {
   onBlur: (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => void;
   error?: string;
   touched?: boolean;
+  disabled?: boolean;
 };
 
-function FormField({ label, name, type = "text", placeholder, value, onChange, onBlur, error, touched }: FieldProps) {
+function FormField({ label, name, type = "text", placeholder, value, onChange, onBlur, error, touched, disabled }: FieldProps) {
   const hasError = touched && error;
 
   return (
@@ -368,8 +457,8 @@ function FormField({ label, name, type = "text", placeholder, value, onChange, o
       </label>
       <input
         id={name} name={name} type={type} placeholder={placeholder}
-        value={value} onChange={onChange} onBlur={onBlur}
-        className={`w-full px-3 py-2.5 bg-[var(--input-bg)] border ${hasError ? 'border-[var(--destructive)]' : 'border-[var(--input-border)]'} rounded-[3px] text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] outline-none transition-colors focus:border-[var(--gold-muted)]`}
+        value={value} onChange={onChange} onBlur={onBlur} disabled={disabled}
+        className={`w-full px-3 py-2.5 bg-[var(--input-bg)] border ${hasError ? 'border-[var(--destructive)]' : 'border-[var(--input-border)]'} rounded-[3px] text-sm text-[var(--text)] placeholder:text-[var(--text-dim)] outline-none transition-colors focus:border-[var(--gold-muted)] disabled:opacity-50 disabled:cursor-not-allowed`}
       />
       <div className={`overflow-hidden transition-all duration-300 ${hasError ? 'max-h-6 opacity-100 mt-1' : 'max-h-0 opacity-0 mt-0'}`}>
         <p className="text-[var(--destructive)] text-[0.65rem]">{error}</p>
@@ -378,7 +467,7 @@ function FormField({ label, name, type = "text", placeholder, value, onChange, o
   );
 }
 
-function FormSelect({ label, name, value, onChange, onBlur, error, touched, options }: FieldProps & { options: { value: string, label: string }[] }) {
+function FormSelect({ label, name, value, onChange, onBlur, error, touched, options, disabled }: FieldProps & { options: { value: string, label: string }[], disabled?: boolean }) {
   const hasError = touched && error;
 
   return (
@@ -388,8 +477,8 @@ function FormSelect({ label, name, value, onChange, onBlur, error, touched, opti
       </label>
       <div className="relative">
         <select
-          id={name} name={name} value={value} onChange={onChange} onBlur={onBlur}
-          className={`appearance-none w-full px-3 py-2.5 bg-[var(--input-bg)] border ${hasError ? 'border-[var(--destructive)]' : 'border-[var(--input-border)]'} rounded-[3px] text-sm ${value ? 'text-[var(--text)]' : 'text-[var(--text-dim)]'} outline-none transition-colors focus:border-[var(--gold-muted)] cursor-pointer`}
+          id={name} name={name} value={value} onChange={onChange} onBlur={onBlur} disabled={disabled}
+          className={`appearance-none w-full px-3 py-2.5 bg-[var(--input-bg)] border ${hasError ? 'border-[var(--destructive)]' : 'border-[var(--input-border)]'} rounded-[3px] text-sm ${value ? 'text-[var(--text)]' : 'text-[var(--text-dim)]'} outline-none transition-colors focus:border-[var(--gold-muted)] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed`}
         >
           <option value="" disabled>Select {label}</option>
           {options.map((opt) => (
