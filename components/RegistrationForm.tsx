@@ -202,7 +202,7 @@ export default function RegistrationForm() {
       const next = { ...prev, [name]: val };
       // When the user changes away from "Other", clear the custom text field
       if (name === "yearOfStudy" && val !== "Other") next.yearOfStudyOther = "";
-      if (name === "college"     && val !== "Other") next.collegeOther = "";
+      if (name === "college" && val !== "Other") next.collegeOther = "";
       return next;
     });
     // Clear server-side error whenever user edits the form
@@ -232,7 +232,7 @@ export default function RegistrationForm() {
     const step1Fields: (keyof FormData)[] = ["name", "dob", "phone", "email", "gender", "yearOfStudy", "college"];
     // Conditionally require the free-text "Other" fields
     if (formData.yearOfStudy === "Other") step1Fields.push("yearOfStudyOther");
-    if (formData.college === "Other")     step1Fields.push("collegeOther");
+    if (formData.college === "Other") step1Fields.push("collegeOther");
     const newErrors: FormErrors = {};
     let isValid = true;
 
@@ -391,7 +391,7 @@ export default function RegistrationForm() {
 
                 <div className="space-y-6">
                   <FormField
-                    label="Full Name" name="name" type="text" placeholder="John Doe"
+                    label="Full Name" name="name" type="text" placeholder="Dario George"
                     value={formData.name} onChange={handleChange} onBlur={handleBlur} error={errors.name} touched={touched.name}
                     disabled={isLoading}
                   />
@@ -411,12 +411,12 @@ export default function RegistrationForm() {
 
                   <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
                     <FormField
-                      label="Phone Number" name="phone" type="tel" placeholder="+91 90000 00000"
+                      label="Phone Number" name="phone" type="tel" placeholder="+91 97654321"
                       value={formData.phone} onChange={handleChange} onBlur={handleBlur} error={errors.phone} touched={touched.phone}
                       disabled={isLoading}
                     />
                     <FormField
-                      label="Email Address" name="email" type="email" placeholder="john@example.com"
+                      label="Email Address" name="email" type="email" placeholder="email@example.com"
                       value={formData.email} onChange={handleChange} onBlur={handleBlur} error={errors.email} touched={touched.email}
                       disabled={isLoading}
                     />
@@ -430,13 +430,13 @@ export default function RegistrationForm() {
                         label="Year of Study" name="yearOfStudy"
                         value={formData.yearOfStudy} onChange={handleChange} onBlur={handleBlur} error={errors.yearOfStudy} touched={touched.yearOfStudy}
                         options={[
-                          { value: "UG - 1st Year",  label: "UG — 1st Year" },
-                          { value: "UG - 2nd Year",  label: "UG — 2nd Year" },
-                          { value: "UG - 3rd Year",  label: "UG — 3rd Year" },
-                          { value: "UG - 4th Year",  label: "UG — 4th Year" },
-                          { value: "PG - 1st Year",  label: "PG — 1st Year" },
-                          { value: "PG - 2nd Year",  label: "PG — 2nd Year" },
-                          { value: "Other",           label: "Other" },
+                          { value: "UG - 1st Year", label: "UG — 1st Year" },
+                          { value: "UG - 2nd Year", label: "UG — 2nd Year" },
+                          { value: "UG - 3rd Year", label: "UG — 3rd Year" },
+                          { value: "UG - 4th Year", label: "UG — 4th Year" },
+                          { value: "PG - 1st Year", label: "PG — 1st Year" },
+                          { value: "PG - 2nd Year", label: "PG — 2nd Year" },
+                          { value: "Other", label: "Other" },
                         ]}
                         disabled={isLoading}
                       />
@@ -460,11 +460,11 @@ export default function RegistrationForm() {
                         value={formData.college} onChange={handleChange} onBlur={handleBlur} error={errors.college} touched={touched.college}
                         options={[
                           { value: "SJCET", label: "SJCET" },
-                          { value: "ACP",   label: "ACP" },
-                          { value: "DMC",   label: "DMC" },
-                          { value: "STC",   label: "STC" },
-                          { value: "SJC",   label: "SJC" },
-                          { value: "SGC",   label: "SGC" },
+                          { value: "ACP", label: "ACP" },
+                          { value: "DMC", label: "DMC" },
+                          { value: "STC", label: "STC" },
+                          { value: "SJC", label: "SJC" },
+                          { value: "SGC", label: "SGC" },
                           { value: "Other", label: "Other" },
                         ]}
                         disabled={isLoading}
@@ -473,7 +473,7 @@ export default function RegistrationForm() {
                         <div className="animate-fade-up">
                           <FormField
                             label="Please specify" name="collegeOther" type="text"
-                            placeholder="e.g. Mar Thoma College"
+                            placeholder="e.g. M A College"
                             value={formData.collegeOther} onChange={handleChange} onBlur={handleBlur}
                             error={errors.collegeOther} touched={touched.collegeOther}
                             disabled={isLoading}
@@ -528,7 +528,7 @@ export default function RegistrationForm() {
                       disabled={isLoading}
                     />
                     <FormField
-                      label="Parent Phone" name="parentPhone" type="tel" placeholder="+91 90000 00000"
+                      label="Parent Phone" name="parentPhone" type="tel" placeholder="+91 987654321"
                       value={formData.parentPhone} onChange={handleChange} onBlur={handleBlur} error={errors.parentPhone} touched={touched.parentPhone}
                       disabled={isLoading}
                     />
