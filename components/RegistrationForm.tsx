@@ -10,7 +10,9 @@ type FormData = {
   email: string;
   gender: string;
   yearOfStudy: string;
+  yearOfStudyOther: string;
   college: string;
+  collegeOther: string;
   parish: string;
   diocese: string;
   parentName: string;
@@ -35,7 +37,9 @@ export default function RegistrationForm() {
     email: "",
     gender: "",
     yearOfStudy: "",
+    yearOfStudyOther: "",
     college: "",
+    collegeOther: "",
     parish: "",
     diocese: "",
     parentName: "",
@@ -129,11 +133,31 @@ export default function RegistrationForm() {
         return "";
       }
 
+      // ── yearOfStudyOther: required when yearOfStudy === "Other" ──────────────
+      case "yearOfStudyOther": {
+        const v = (value as string).trim();
+        if (v.length < 2) return "Please specify your year of study (min. 2 characters).";
+        if (v.length > 100) return "Must not exceed 100 characters.";
+        if (!/^[A-Za-z0-9\s\-.()/]+$/.test(v))
+          return "Contains invalid characters.";
+        return "";
+      }
+
       // ── College: must be one of the allowed enum values ───────────────────────
       case "college": {
         const allowed = ["SJCET", "ACP", "DMC", "STC", "SJC", "SGC", "Other"];
         if (!allowed.includes(value as string))
           return "Please select a valid college.";
+        return "";
+      }
+
+      // ── collegeOther: required when college === "Other" ──────────────────────
+      case "collegeOther": {
+        const v = (value as string).trim();
+        if (v.length < 2) return "Please specify your college name (min. 2 characters).";
+        if (v.length > 100) return "Must not exceed 100 characters.";
+        if (!/^[A-Za-z0-9\s\-'.,()]+$/.test(v))
+          return "Contains invalid characters.";
         return "";
       }
 
@@ -174,7 +198,13 @@ export default function RegistrationForm() {
       ? (e.target as HTMLInputElement).checked
       : sanitize(value);
 
-    setFormData((prev) => ({ ...prev, [name]: val }));
+    setFormData((prev) => {
+      const next = { ...prev, [name]: val };
+      // When the user changes away from "Other", clear the custom text field
+      if (name === "yearOfStudy" && val !== "Other") next.yearOfStudyOther = "";
+      if (name === "college"     && val !== "Other") next.collegeOther = "";
+      return next;
+    });
     // Clear server-side error whenever user edits the form
     if (submitError) setSubmitError(null);
 
@@ -200,6 +230,9 @@ export default function RegistrationForm() {
 
   const validateStep1 = () => {
     const step1Fields: (keyof FormData)[] = ["name", "dob", "phone", "email", "gender", "yearOfStudy", "college"];
+    // Conditionally require the free-text "Other" fields
+    if (formData.yearOfStudy === "Other") step1Fields.push("yearOfStudyOther");
+    if (formData.college === "Other")     step1Fields.push("collegeOther");
     const newErrors: FormErrors = {};
     let isValid = true;
 
@@ -390,34 +423,65 @@ export default function RegistrationForm() {
                   </div>
 
                   <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-                    <FormSelect
-                      label="Year of Study" name="yearOfStudy"
-                      value={formData.yearOfStudy} onChange={handleChange} onBlur={handleBlur} error={errors.yearOfStudy} touched={touched.yearOfStudy}
-                      options={[
-                        { value: "UG - 1st Year",  label: "UG — 1st Year" },
-                        { value: "UG - 2nd Year",  label: "UG — 2nd Year" },
-                        { value: "UG - 3rd Year",  label: "UG — 3rd Year" },
-                        { value: "UG - 4th Year",  label: "UG — 4th Year" },
-                        { value: "PG - 1st Year",  label: "PG — 1st Year" },
-                        { value: "PG - 2nd Year",  label: "PG — 2nd Year" },
-                        { value: "Other",           label: "Other" },
-                      ]}
-                      disabled={isLoading}
-                    />
-                    <FormSelect
-                      label="College" name="college"
-                      value={formData.college} onChange={handleChange} onBlur={handleBlur} error={errors.college} touched={touched.college}
-                      options={[
-                        { value: "SJCET", label: "SJCET" },
-                        { value: "ACP",   label: "ACP" },
-                        { value: "DMC",   label: "DMC" },
-                        { value: "STC",   label: "STC" },
-                        { value: "SJC",   label: "SJC" },
-                        { value: "SGC",   label: "SGC" },
-                        { value: "Other", label: "Other" },
-                      ]}
-                      disabled={isLoading}
-                    />
+
+                    {/* Year of Study column */}
+                    <div className="flex flex-col gap-3">
+                      <FormSelect
+                        label="Year of Study" name="yearOfStudy"
+                        value={formData.yearOfStudy} onChange={handleChange} onBlur={handleBlur} error={errors.yearOfStudy} touched={touched.yearOfStudy}
+                        options={[
+                          { value: "UG - 1st Year",  label: "UG — 1st Year" },
+                          { value: "UG - 2nd Year",  label: "UG — 2nd Year" },
+                          { value: "UG - 3rd Year",  label: "UG — 3rd Year" },
+                          { value: "UG - 4th Year",  label: "UG — 4th Year" },
+                          { value: "PG - 1st Year",  label: "PG — 1st Year" },
+                          { value: "PG - 2nd Year",  label: "PG — 2nd Year" },
+                          { value: "Other",           label: "Other" },
+                        ]}
+                        disabled={isLoading}
+                      />
+                      {formData.yearOfStudy === "Other" && (
+                        <div className="animate-fade-up">
+                          <FormField
+                            label="Please specify" name="yearOfStudyOther" type="text"
+                            placeholder="e.g. Diploma 2nd Year"
+                            value={formData.yearOfStudyOther} onChange={handleChange} onBlur={handleBlur}
+                            error={errors.yearOfStudyOther} touched={touched.yearOfStudyOther}
+                            disabled={isLoading}
+                          />
+                        </div>
+                      )}
+                    </div>
+
+                    {/* College column */}
+                    <div className="flex flex-col gap-3">
+                      <FormSelect
+                        label="College" name="college"
+                        value={formData.college} onChange={handleChange} onBlur={handleBlur} error={errors.college} touched={touched.college}
+                        options={[
+                          { value: "SJCET", label: "SJCET" },
+                          { value: "ACP",   label: "ACP" },
+                          { value: "DMC",   label: "DMC" },
+                          { value: "STC",   label: "STC" },
+                          { value: "SJC",   label: "SJC" },
+                          { value: "SGC",   label: "SGC" },
+                          { value: "Other", label: "Other" },
+                        ]}
+                        disabled={isLoading}
+                      />
+                      {formData.college === "Other" && (
+                        <div className="animate-fade-up">
+                          <FormField
+                            label="Please specify" name="collegeOther" type="text"
+                            placeholder="e.g. Mar Thoma College"
+                            value={formData.collegeOther} onChange={handleChange} onBlur={handleBlur}
+                            error={errors.collegeOther} touched={touched.collegeOther}
+                            disabled={isLoading}
+                          />
+                        </div>
+                      )}
+                    </div>
+
                   </div>
                 </div>
               </div>

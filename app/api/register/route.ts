@@ -20,15 +20,17 @@ const RegistrationSchema = z.object({
     .regex(/^\+?[\d\s\-]{10,}$/, "Enter a valid phone number."),
   email: z.string().email("Enter a valid email address.").max(255),
   gender: z.enum(["male", "female"], { message: "Gender must be male or female." }),
-  yearOfStudy: z.enum(
-    ["UG - 1st Year", "UG - 2nd Year", "UG - 3rd Year", "UG - 4th Year",
-     "PG - 1st Year", "PG - 2nd Year", "Other"],
+  yearOfStudy: z.string().refine(
+    (v) => ["UG - 1st Year", "UG - 2nd Year", "UG - 3rd Year", "UG - 4th Year",
+             "PG - 1st Year", "PG - 2nd Year", "Other"].includes(v),
     { message: "Invalid year of study." }
   ),
-  college: z.enum(
-    ["SJCET", "ACP", "DMC", "STC", "SJC", "SGC", "Other"],
+  yearOfStudyOther: z.string().optional(),
+  college: z.string().refine(
+    (v) => ["SJCET", "ACP", "DMC", "STC", "SJC", "SGC", "Other"].includes(v),
     { message: "Invalid college name." }
   ),
+  collegeOther: z.string().optional(),
   parish: z.string().min(1, "Parish name is required.").max(200),
   diocese: z.string().min(1, "Diocese name is required.").max(200),
   parentName: z.string().min(2, "Parent name must be at least 2 characters.").max(120),
@@ -38,6 +40,41 @@ const RegistrationSchema = z.object({
   confirmed: z.literal(true, {
     message: "You must confirm to submit.",
   }),
+}).superRefine((data, ctx) => {
+  // When yearOfStudy is "Other", require a custom text value
+  if (data.yearOfStudy === "Other") {
+    const v = (data.yearOfStudyOther ?? "").trim();
+    if (v.length < 2) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["yearOfStudyOther"],
+        message: "Please specify your year of study (min. 2 characters).",
+      });
+    } else if (v.length > 100) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["yearOfStudyOther"],
+        message: "Must not exceed 100 characters.",
+      });
+    }
+  }
+  // When college is "Other", require a custom text value
+  if (data.college === "Other") {
+    const v = (data.collegeOther ?? "").trim();
+    if (v.length < 2) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["collegeOther"],
+        message: "Please specify your college name (min. 2 characters).",
+      });
+    } else if (v.length > 100) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["collegeOther"],
+        message: "Must not exceed 100 characters.",
+      });
+    }
+  }
 });
 
 // ─── Supabase Admin Client ────────────────────────────────────────────────────
@@ -189,8 +226,13 @@ export async function POST(request: Request) {
       phone:             data.phone.trim(),
       email:             data.email.toLowerCase().trim(),
       gender:            data.gender,
-      year_of_study:     data.yearOfStudy,
-      college:           data.college,
+      // Resolve "Other" — store the custom text the user typed, not the literal "Other"
+      year_of_study:     data.yearOfStudy === "Other"
+                           ? (data.yearOfStudyOther ?? "").trim()
+                           : data.yearOfStudy,
+      college:           data.college === "Other"
+                           ? (data.collegeOther ?? "").trim()
+                           : data.college,
       parish:            data.parish.trim(),
       diocese:           data.diocese.trim(),
       parent_name:       data.parentName.trim(),
