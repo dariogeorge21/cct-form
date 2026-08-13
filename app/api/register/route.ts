@@ -20,7 +20,15 @@ const RegistrationSchema = z.object({
     .regex(/^\+?[\d\s\-]{10,}$/, "Enter a valid phone number."),
   email: z.string().email("Enter a valid email address.").max(255),
   gender: z.enum(["male", "female"], { message: "Gender must be male or female." }),
-  yearOfStudy: z.string().min(1, "Year of study is required.").max(100),
+  yearOfStudy: z.enum(
+    ["UG - 1st Year", "UG - 2nd Year", "UG - 3rd Year", "UG - 4th Year",
+     "PG - 1st Year", "PG - 2nd Year", "Other"],
+    { message: "Invalid year of study." }
+  ),
+  college: z.enum(
+    ["SJCET", "ACP", "DMC", "STC", "SJC", "SGC", "Other"],
+    { message: "Invalid college name." }
+  ),
   parish: z.string().min(1, "Parish name is required.").max(200),
   diocese: z.string().min(1, "Diocese name is required.").max(200),
   parentName: z.string().min(2, "Parent name must be at least 2 characters.").max(120),
@@ -181,7 +189,8 @@ export async function POST(request: Request) {
       phone:             data.phone.trim(),
       email:             data.email.toLowerCase().trim(),
       gender:            data.gender,
-      year_of_study:     data.yearOfStudy.trim(),
+      year_of_study:     data.yearOfStudy,
+      college:           data.college,
       parish:            data.parish.trim(),
       diocese:           data.diocese.trim(),
       parent_name:       data.parentName.trim(),

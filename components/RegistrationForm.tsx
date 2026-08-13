@@ -10,6 +10,7 @@ type FormData = {
   email: string;
   gender: string;
   yearOfStudy: string;
+  college: string;
   parish: string;
   diocese: string;
   parentName: string;
@@ -34,6 +35,7 @@ export default function RegistrationForm() {
     email: "",
     gender: "",
     yearOfStudy: "",
+    college: "",
     parish: "",
     diocese: "",
     parentName: "",
@@ -116,13 +118,22 @@ export default function RegistrationForm() {
         return "";
       }
 
-      // ── Year of Study: min 2 chars, alphanumeric + basic punctuation ────────
+      // ── Year of Study: must be one of the allowed enum values ───────────────
       case "yearOfStudy": {
-        const v = value as string;
-        if (v.trim().length < 2) return "Please enter your year of study (e.g. 1st Year B.Tech).";
-        if (v.length > 100) return "Year of study must not exceed 100 characters.";
-        if (!/^[A-Za-z0-9\s\-.()/]+$/.test(v))
-          return "Year of study contains invalid characters.";
+        const allowed = [
+          "UG - 1st Year", "UG - 2nd Year", "UG - 3rd Year", "UG - 4th Year",
+          "PG - 1st Year", "PG - 2nd Year", "Other",
+        ];
+        if (!allowed.includes(value as string))
+          return "Please select a valid year of study.";
+        return "";
+      }
+
+      // ── College: must be one of the allowed enum values ───────────────────────
+      case "college": {
+        const allowed = ["SJCET", "ACP", "DMC", "STC", "SJC", "SGC", "Other"];
+        if (!allowed.includes(value as string))
+          return "Please select a valid college.";
         return "";
       }
 
@@ -188,7 +199,7 @@ export default function RegistrationForm() {
   };
 
   const validateStep1 = () => {
-    const step1Fields: (keyof FormData)[] = ["name", "dob", "phone", "email", "gender", "yearOfStudy"];
+    const step1Fields: (keyof FormData)[] = ["name", "dob", "phone", "email", "gender", "yearOfStudy", "college"];
     const newErrors: FormErrors = {};
     let isValid = true;
 
@@ -378,11 +389,36 @@ export default function RegistrationForm() {
                     />
                   </div>
 
-                  <FormField
-                    label="Year of Study" name="yearOfStudy" type="text" placeholder="e.g. 1st Year B.Tech"
-                    value={formData.yearOfStudy} onChange={handleChange} onBlur={handleBlur} error={errors.yearOfStudy} touched={touched.yearOfStudy}
-                    disabled={isLoading}
-                  />
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                    <FormSelect
+                      label="Year of Study" name="yearOfStudy"
+                      value={formData.yearOfStudy} onChange={handleChange} onBlur={handleBlur} error={errors.yearOfStudy} touched={touched.yearOfStudy}
+                      options={[
+                        { value: "UG - 1st Year",  label: "UG — 1st Year" },
+                        { value: "UG - 2nd Year",  label: "UG — 2nd Year" },
+                        { value: "UG - 3rd Year",  label: "UG — 3rd Year" },
+                        { value: "UG - 4th Year",  label: "UG — 4th Year" },
+                        { value: "PG - 1st Year",  label: "PG — 1st Year" },
+                        { value: "PG - 2nd Year",  label: "PG — 2nd Year" },
+                        { value: "Other",           label: "Other" },
+                      ]}
+                      disabled={isLoading}
+                    />
+                    <FormSelect
+                      label="College" name="college"
+                      value={formData.college} onChange={handleChange} onBlur={handleBlur} error={errors.college} touched={touched.college}
+                      options={[
+                        { value: "SJCET", label: "SJCET" },
+                        { value: "ACP",   label: "ACP" },
+                        { value: "DMC",   label: "DMC" },
+                        { value: "STC",   label: "STC" },
+                        { value: "SJC",   label: "SJC" },
+                        { value: "SGC",   label: "SGC" },
+                        { value: "Other", label: "Other" },
+                      ]}
+                      disabled={isLoading}
+                    />
+                  </div>
                 </div>
               </div>
 
