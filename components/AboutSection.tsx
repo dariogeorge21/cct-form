@@ -81,27 +81,55 @@ export default function AboutSection() {
                   "var(--font-barlow-condensed), 'Barlow Condensed', Impact, 'Arial Narrow', sans-serif",
               }}
             >
-              A Call to Truth.
-              <br />
-              A Life Transformed.
+              Who are you?
             </h2>
 
-            <p
+            <div
               style={{
-                fontSize: "0.82rem",
+                fontSize: "0.85rem",
                 lineHeight: 1.85,
                 color: "var(--text-muted)",
-                maxWidth: "340px",
+                maxWidth: "460px",
                 marginBottom: "2rem",
+                display: "flex",
+                flexDirection: "column",
+                gap: "1rem",
               }}
             >
-              ORAH is more than an event—it&apos;s a divine encounter. Four
-              days to seek the truth, be renewed in His presence, and rise as
-              witnesses of His love in the world.
-            </p>
+              <p>
+                Not your name. <br/>
+                Not your marks. <br/>
+                Not your achievements. <br/>
+                Not your failures.
+              </p>
+              
+              <p className="text-[var(--text)] font-semibold text-[0.9rem]">
+                Then who are you, really?
+              </p>
 
-            <a href="#register" className="btn-outline-gold">
-              Learn More
+              <p>
+                In a world that constantly tells us who we should be, many of us are still searching for our true identity.
+              </p>
+
+              <p>
+                <strong className="text-[var(--text)]">ORAH</strong> is a four-day journey to discover the answer to one of life&apos;s deepest questions: &quot;Who am I?&quot;
+              </p>
+
+              <p>
+                Through an encounter with the Light, discover your worth, your purpose, and the truth that your identity is not something you earn—it&apos;s something you receive.
+              </p>
+
+              <p className="text-[var(--gold-bright)] font-semibold text-[0.95rem] tracking-wide mt-2">
+                You are loved. You are chosen. You are a child of God.
+              </p>
+
+              <p className="uppercase tracking-widest text-[0.65rem] text-[var(--gold-muted)] font-bold mt-4">
+                ORAH — Discover the Light. Discover Your Identity.
+              </p>
+            </div>
+
+            <a href="#register" className="btn-outline-gold mt-2">
+              Register Now
             </a>
           </div>
 
