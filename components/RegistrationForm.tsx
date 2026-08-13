@@ -61,7 +61,7 @@ export default function RegistrationForm() {
   // Strips HTML tags and trims whitespace to prevent XSS payloads from being
   // stored in state or sent to the server.
   const sanitize = (value: string): string =>
-    value.replace(/<[^>]*>/g, "").trim();
+    value.replace(/<[^>]*>/g, "");
 
   // ─── Field Validators ───────────────────────────────────────────────────────
   const validateField = (name: keyof FormData, value: string | boolean): string => {
@@ -279,6 +279,8 @@ export default function RegistrationForm() {
     if (validateStep1()) {
       setStep(2);
       window.scrollTo({ top: document.getElementById("register")?.offsetTop! - 80, behavior: "smooth" });
+    } else {
+      window.alert("Please fix the highlighted errors before continuing.");
     }
   };
 
@@ -290,7 +292,10 @@ export default function RegistrationForm() {
     e.preventDefault();
     setSubmitError(null);
 
-    if (!validateStep1() || !validateStep2()) return;
+    if (!validateStep1() || !validateStep2()) {
+      window.alert("Please fix the highlighted errors before submitting.");
+      return;
+    }
 
     setIsLoading(true);
 
