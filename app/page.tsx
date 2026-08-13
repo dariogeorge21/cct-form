@@ -17,9 +17,39 @@ import Footer from "@/components/Footer";
 //   Footer                 (brand | links | social | copyright)
 // ─────────────────────────────────────────────────────────────────────────────
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "ORAH 2026 — Jesus Youth Pala",
+  "startDate": "2026-09-18T17:00:00+05:30",
+  "endDate": "2026-09-21T14:00:00+05:30",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "location": {
+    "@type": "Place",
+    "name": "St Thomas College",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Pala",
+      "addressRegion": "Kerala",
+      "addressCountry": "IN"
+    }
+  },
+  "description": "ORAH is a divine encounter for youth and young adults by Jesus Youth Pala. September 18–21, 2026 at St Thomas College, Pala. Four days of worship, the Word, community, and mission.",
+  "organizer": {
+    "@type": "Organization",
+    "name": "Jesus Youth Pala",
+    "url": "https://jesusyouth.org" // replace with actual URL if known
+  }
+};
+
 export default function Home() {
   return (
     <main style={{ backgroundColor: "var(--bg)" }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* 0. Header Navigation */}
       <Header />
 

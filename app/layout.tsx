@@ -19,11 +19,42 @@ export const metadata: Metadata = {
   title: "ORAH 2026 — Jesus Youth Pala | A Call to Truth. A Life Transformed.",
   description:
     "ORAH is a divine encounter for youth and young adults by Jesus Youth Pala. September 18–21, 2026 at St Thomas College, Pala. Four days of worship, the Word, community, and mission.",
-  keywords: ["ORAH", "Jesus Youth Pala", "Christian youth event", "Catholic youth", "Pala", "Kerala"],
+  keywords: [
+    "ORAH",
+    "Jesus Youth Pala",
+    "Christian youth event",
+    "Catholic youth",
+    "Pala",
+    "Kerala",
+    "Jesus Youth",
+    "Youth Conference",
+    "St Thomas College Pala"
+  ],
+  authors: [{ name: "Jesus Youth Pala" }],
+  creator: "Jesus Youth Pala",
+  publisher: "Jesus Youth Pala",
   openGraph: {
     title: "ORAH 2026 — Jesus Youth Pala",
-    description: "A Call to Truth. A Life Transformed. Sep 18–21, 2026.",
+    description: "A Call to Truth. A Life Transformed. Sep 18–21, 2026 at St Thomas College, Pala.",
     type: "website",
+    locale: "en_IN",
+    siteName: "ORAH 2026",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ORAH 2026 — Jesus Youth Pala",
+    description: "A Call to Truth. A Life Transformed. Sep 18–21, 2026 at St Thomas College, Pala.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 };
 
