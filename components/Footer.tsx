@@ -96,28 +96,21 @@ const JYLogoMark = () => (
 const quickLinks = [
   { label: "Home", href: "#" },
   { label: "About", href: "#about" },
-  { label: "Schedule", href: "#" },
   { label: "Register", href: "#register" },
-  { label: "Contact", href: "#" },
+  { label: "Contact", href: "tel:9400389831" },
 ];
 
 const socialLinks = [
   {
     id: "instagram",
     label: "INSTAGRAM",
-    href: "#",
+    href: "https://www.instagram.com/jesus_youth_pala",
     icon: <InstagramIcon />,
-  },
-  {
-    id: "youtube",
-    label: "YOUTUBE",
-    href: "#",
-    icon: <YoutubeIcon />,
   },
   {
     id: "whatsapp",
     label: "WHATSAPP",
-    href: "#",
+    href: "https://wa.me/+919400389831",
     icon: <WhatsAppIcon />,
   },
 ];
@@ -197,9 +190,9 @@ export default function Footer() {
                 fontWeight: 400,
               }}
             >
-              ORAH is an initiative of Jesus Youth Pala to bring young
-              hearts closer to Christ through worship, the Word, community,
-              and mission.
+              ORAH is a four-day journey to discover the answer to one of life&apos;s deepest questions: &quot;Who am I?&quot;
+              <br /><br />
+              <strong className="text-[var(--text)]">Discover the Light. Discover Your Identity.</strong>
             </p>
           </div>
 
