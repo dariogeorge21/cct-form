@@ -3,6 +3,7 @@ import HeroPlaceholder from "@/components/HeroPlaceholder";
 import CountdownTimer from "@/components/CountdownTimer";
 import AboutSection from "@/components/AboutSection";
 import RegistrationForm from "@/components/RegistrationForm";
+import VenueSection from "@/components/VenueSection";
 import EventInfoStrip from "@/components/EventInfoStrip";
 import Footer from "@/components/Footer";
 
@@ -13,6 +14,7 @@ import Footer from "@/components/Footer";
 //   CountdownTimer         (standalone minimal Awwwards countdown timer strip)
 //   AboutSection           (2-col: editorial copy + 3 feature cards)
 //   RegistrationForm       (centered dark bordered registration form panel)
+//   VenueSection           (location details, navigation app links & embedded map)
 //   EventInfoStrip         (4-item horizontal info bar)
 //   Footer                 (brand | links | social | copyright)
 // ─────────────────────────────────────────────────────────────────────────────
@@ -97,7 +99,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. Event Info Strip */}
+      {/* Thin divider */}
+      <div style={{ borderTop: "1px solid var(--border-subtle)" }} />
+
+      {/* 5. Venue & Map Section */}
+      <VenueSection />
+
+      {/* 6. Event Info Strip */}
       <EventInfoStrip />
 
       {/* 6. Footer */}

@@ -21,10 +21,11 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
+  { id: "home", label: "HOME", href: "#" },
   { id: "about", label: "ABOUT", href: "#about" },
   { id: "register", label: "REGISTER", href: "#register" },
-  { id: "info", label: "EVENT INFO", href: "#event-info" },
-  { id: "venue", label: "VENUE", href: "#event-info" },
+  { id: "venue", label: "VENUE", href: "#venue" },
+
 ];
 
 export default function Header() {
@@ -42,7 +43,7 @@ export default function Header() {
       }
 
       // Active section detection
-      const sections = ["about", "register", "event-info"];
+      const sections = ["about", "register", "venue", "event-info"];
       const scrollPosition = window.scrollY + 200;
 
       for (const sectionId of sections) {
