@@ -65,6 +65,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${barlowCondensed.variable}`}>
+      <head>
+        <meta name="apple-mobile-web-app-title" content="Orah 2026" />
+      </head>
       <body
         className="min-h-full"
         style={{
