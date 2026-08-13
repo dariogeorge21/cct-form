@@ -51,31 +51,105 @@ export default function RegistrationForm() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // ─── Sanitizer ─────────────────────────────────────────────────────────────
+  // Strips HTML tags and trims whitespace to prevent XSS payloads from being
+  // stored in state or sent to the server.
+  const sanitize = (value: string): string =>
+    value.replace(/<[^>]*>/g, "").trim();
+
+  // ─── Field Validators ───────────────────────────────────────────────────────
   const validateField = (name: keyof FormData, value: string | boolean): string => {
+    // Non-checkbox empty check
     if (typeof value === "string" && value.trim() === "") {
-      if (name === "confirmed") return ""; // handled separately
+      if (name === "confirmed") return "";
       return "This field is required.";
     }
 
     switch (name) {
-      case "email":
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value as string)
-          ? ""
-          : "Enter a valid email address.";
+      // ── Name fields: letters, spaces, hyphens, apostrophes only; 2-120 chars ──
+      case "name":
+      case "parentName": {
+        const v = value as string;
+        if (v.trim().length < 2) return "Name must be at least 2 characters.";
+        if (v.length > 120) return "Name must not exceed 120 characters.";
+        if (!/^[A-Za-z\s\-'.]+$/.test(v))
+          return "Name must contain only letters, spaces, hyphens, or apostrophes.";
+        return "";
+      }
+
+      // ── Email: RFC-style check + max length ────────────────────────────────
+      case "email": {
+        const v = (value as string).trim();
+        if (v.length > 255) return "Email must not exceed 255 characters.";
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v))
+          return "Enter a valid email address.";
+        return "";
+      }
+
+      // ── Phone numbers: must contain exactly 10 digits (after stripping formatting) ──
       case "phone":
-      case "parentPhone":
-        return /^\+?[\d\s\-]{10,}$/.test(value as string)
-          ? ""
-          : "Enter a valid phone number.";
+      case "parentPhone": {
+        const v = value as string;
+        const digits = v.replace(/\D/g, "");
+        if (digits.length < 10) return "Phone number must have at least 10 digits.";
+        if (digits.length > 15) return "Phone number must not exceed 15 digits.";
+        // Allow: +, digits, spaces, hyphens only
+        if (!/^\+?[\d\s\-]+$/.test(v)) return "Enter a valid phone number.";
+        return "";
+      }
+
+      // ── Date of birth: strict parse, year range 1995-2015 ─────────────────
       case "dob": {
-        const year = new Date(value as string).getFullYear();
-        if (isNaN(year)) return "Enter a valid date.";
+        const v = value as string;
+        // Must match YYYY-MM-DD format
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) return "Enter a valid date (YYYY-MM-DD).";
+        const parsed = new Date(v);
+        if (isNaN(parsed.getTime())) return "Enter a valid date.";
+        const year = parsed.getUTCFullYear();
+        const month = parsed.getUTCMonth() + 1;
+        const day = parsed.getUTCDate();
+        // Guard against JS date overflow (e.g. Feb 30 silently becomes Mar 2)
+        const [, mm, dd] = v.split("-").map(Number);
+        if (month !== mm || day !== dd) return "Enter a valid calendar date.";
         if (year < 1995 || year > 2015)
           return "Date of birth must be between 1995 and 2015.";
         return "";
       }
+
+      // ── Year of Study: min 2 chars, alphanumeric + basic punctuation ────────
+      case "yearOfStudy": {
+        const v = value as string;
+        if (v.trim().length < 2) return "Please enter your year of study (e.g. 1st Year B.Tech).";
+        if (v.length > 100) return "Year of study must not exceed 100 characters.";
+        if (!/^[A-Za-z0-9\s\-.()/]+$/.test(v))
+          return "Year of study contains invalid characters.";
+        return "";
+      }
+
+      // ── Parish: min 2 chars, letters + common punctuation ──────────────────
+      case "parish": {
+        const v = value as string;
+        if (v.trim().length < 2) return "Parish name must be at least 2 characters.";
+        if (v.length > 200) return "Parish name must not exceed 200 characters.";
+        if (!/^[A-Za-z0-9\s\-'.,()]+$/.test(v))
+          return "Parish name contains invalid characters.";
+        return "";
+      }
+
+      // ── Diocese: same rules as parish ──────────────────────────────────────
+      case "diocese": {
+        const v = value as string;
+        if (v.trim().length < 2) return "Diocese name must be at least 2 characters.";
+        if (v.length > 200) return "Diocese name must not exceed 200 characters.";
+        if (!/^[A-Za-z0-9\s\-'.,()]+$/.test(v))
+          return "Diocese name contains invalid characters.";
+        return "";
+      }
+
+      // ── Confirmation checkbox ───────────────────────────────────────────────
       case "confirmed":
         return value === true ? "" : "You must confirm to proceed.";
+
       default:
         return "";
     }
@@ -84,7 +158,10 @@ export default function RegistrationForm() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     const isCheckbox = type === "checkbox";
-    const val = isCheckbox ? (e.target as HTMLInputElement).checked : value;
+    // Sanitize text inputs to strip HTML injection attempts
+    const val = isCheckbox
+      ? (e.target as HTMLInputElement).checked
+      : sanitize(value);
 
     setFormData((prev) => ({ ...prev, [name]: val }));
     // Clear server-side error whenever user edits the form
