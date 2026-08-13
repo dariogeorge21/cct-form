@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ArrowRight, ArrowLeft, Check, Loader2, AlertCircle } from "lucide-react";
+import { ArrowRight, ArrowLeft, Check, Loader2, AlertCircle, Download } from "lucide-react";
+import { generateTicketPdf, type TicketPayload } from "@/lib/generateTicketPdf";
 
 type FormData = {
   name: string;
@@ -28,7 +29,9 @@ export default function RegistrationForm() {
   const [isMobile, setIsMobile] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [ticketData, setTicketData] = useState<TicketPayload | null>(null);
 
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -309,6 +312,23 @@ export default function RegistrationForm() {
       const result = await response.json();
 
       if (response.ok && result.success) {
+        // Transition to ticket-download loading state
+        setIsLoading(false);
+        setIsDownloading(true);
+
+        // Store ticket data for the re-download button on the success screen
+        const payload = result as TicketPayload;
+        setTicketData(payload);
+
+        // Generate and download the PDF ticket
+        try {
+          await generateTicketPdf(payload);
+        } catch (pdfErr) {
+          console.error("[ticket] PDF generation error:", pdfErr);
+          // Non-fatal: still show success even if PDF fails
+        }
+
+        setIsDownloading(false);
         setSubmitted(true);
         return;
       }
@@ -329,9 +349,27 @@ export default function RegistrationForm() {
       setSubmitError("Network error. Please check your connection and try again.");
     } finally {
       setIsLoading(false);
+      setIsDownloading(false);
     }
   };
 
+  // ── Downloading state screen ─────────────────────────────────────────────────
+  if (isDownloading) {
+    return (
+      <div className="w-full max-w-4xl mx-auto rounded-lg border border-[var(--border)] bg-[var(--bg-card)] p-12 text-center animate-fade-up">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full border border-[var(--gold-muted)] mb-6">
+          <Loader2 className="text-[var(--gold)] w-8 h-8 animate-spin" />
+        </div>
+        <p className="eyebrow mb-3">Almost There</p>
+        <h3 className="heading-display text-3xl mb-4">Generating Your Ticket…</h3>
+        <p className="text-[var(--text-muted)] text-sm max-w-sm mx-auto">
+          Your ticket PDF is being prepared and will download automatically.
+        </p>
+      </div>
+    );
+  }
+
+  // ── Success screen ───────────────────────────────────────────────────────────
   if (submitted) {
     return (
       <div className="w-full max-w-4xl mx-auto rounded-lg border border-[var(--border)] bg-[var(--bg-card)] p-12 text-center animate-fade-up">
@@ -341,8 +379,25 @@ export default function RegistrationForm() {
         <p className="eyebrow mb-3">Registration Received</p>
         <h3 className="heading-display text-4xl mb-4">See You There</h3>
         <p className="text-[var(--text-muted)] text-sm max-w-md mx-auto">
-          Thank you for registering. We have received your details and will be in touch with further information soon.
+          Thank you for registering. Your ticket has been downloaded — check your downloads folder.
         </p>
+
+        {/* Ticket download confirmation + re-download */}
+        {ticketData && (
+          <div className="mt-6 inline-flex items-center gap-3 px-5 py-3 rounded-lg border border-[var(--gold-muted)] bg-[var(--gold-muted)]/10">
+            <Download className="w-4 h-4 text-[var(--gold)]" />
+            <span className="text-sm text-[var(--text)] font-medium">
+              {ticketData.ticket.ticketNumber}
+            </span>
+            <span className="text-[var(--border-subtle)]">·</span>
+            <button
+              onClick={() => generateTicketPdf(ticketData)}
+              className="text-xs text-[var(--gold-muted)] hover:text-[var(--gold)] transition-colors underline underline-offset-2"
+            >
+              Download Again
+            </button>
+          </div>
+        )}
 
         {/* Support Contact */}
         <div className="mt-8 flex flex-col items-center p-4 px-6 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg)] max-w-lg mx-auto">
@@ -358,7 +413,7 @@ export default function RegistrationForm() {
     );
   }
 
-  const isSubmitDisabled = isLoading || !formData.confirmed || Object.values(errors).some((e) => e !== "");
+  const isSubmitDisabled = isLoading || isDownloading || !formData.confirmed || Object.values(errors).some((e) => e !== "");
 
   return (
     <div className="w-full max-w-[1800px] mx-auto overflow-hidden">
@@ -587,6 +642,8 @@ export default function RegistrationForm() {
                   >
                     {isLoading ? (
                       <><Loader2 className="w-4 h-4 animate-spin" /> Submitting…</>
+                    ) : isDownloading ? (
+                      <><Loader2 className="w-4 h-4 animate-spin" /> Generating ticket…</>
                     ) : (
                       <>Submit <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></>
                     )}
@@ -614,6 +671,8 @@ export default function RegistrationForm() {
             >
               {isLoading ? (
                 <><Loader2 className="w-4 h-4 animate-spin" /> Submitting…</>
+              ) : isDownloading ? (
+                <><Loader2 className="w-4 h-4 animate-spin" /> Generating ticket…</>
               ) : (
                 <>Submit Registration <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></>
               )}

@@ -262,12 +262,62 @@ export async function POST(request: Request) {
     );
   }
 
-  // 8. Return success
+  // 8. Generate a unique token hash: SHA-256(registrationId + TICKET_SECRET)
+  const secret = process.env.TICKET_SECRET ?? "orah-2026-default-secret";
+  const rawToken = `${registration.id}:${secret}`;
+  const encoder = new TextEncoder();
+  const hashBuffer = await crypto.subtle.digest("SHA-256", encoder.encode(rawToken));
+  const tokenHash = Array.from(new Uint8Array(hashBuffer))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+
+  // 9. Get sequential ticket number for this event (used in filename + PDF)
+  const { count: ticketCount } = await supabase
+    .from("tickets")
+    .select("id", { count: "exact", head: true });
+  const ticketNumber = String((ticketCount ?? 0) + 1).padStart(3, "0");
+  const ticketId = `ORAH-2026-${ticketNumber}`;
+
+  // 10. Insert into tickets table
+  const { error: ticketError } = await supabase
+    .from("tickets")
+    .insert({
+      registration_id: registration.id,
+      token_hash:      tokenHash,
+    });
+
+  if (ticketError) {
+    // Non-fatal: registration succeeded; log and continue
+    console.error("[register] Ticket insert error:", ticketError);
+  }
+
+  // 11. Return enriched success response for client-side PDF generation
+  const issuedAt = new Date().toISOString();
   return NextResponse.json(
     {
       success: true,
       registrationId: registration.id,
       message: "Registration successful!",
+      ticket: {
+        tokenHash:    tokenHash,
+        ticketNumber: ticketId,
+        issuedAt,
+      },
+      participant: {
+        name:        data.name.trim(),
+        parish:      data.parish.trim(),
+        diocese:     data.diocese.trim(),
+        college:     data.college === "Other" ? (data.collegeOther ?? "").trim() : data.college,
+        yearOfStudy: data.yearOfStudy === "Other" ? (data.yearOfStudyOther ?? "").trim() : data.yearOfStudy,
+        gender:      data.gender,
+        phone:       data.phone.trim(),
+        email:       data.email.toLowerCase().trim(),
+        dob:         data.dob,
+      },
+      event: {
+        name:     "ORAH 2026",
+        location: "Pala, Kerala",
+      },
     },
     { status: 201 }
   );
