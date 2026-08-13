@@ -28,7 +28,7 @@ const RegistrationSchema = z.object({
     .string()
     .regex(/^\+?[\d\s\-]{10,}$/, "Enter a valid parent phone number."),
   confirmed: z.literal(true, {
-    errorMap: () => ({ message: "You must confirm to submit." }),
+    message: "You must confirm to submit.",
   }),
 });
 
