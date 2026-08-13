@@ -20,7 +20,7 @@ const featureCards: FeatureCard[] = [
     id: "encounter",
     // Worship crowd hands raised — warm, cinematic
     imageSrc:
-      "https://images.unsplash.com/photo-1576086213369-97a306d36557?w=600&q=80",
+      "/encounter.jpg",
     imageAlt: "Worship crowd with hands raised",
     title: "ENCOUNTER",
     description: "Experience God\nin a new way",
@@ -29,7 +29,7 @@ const featureCards: FeatureCard[] = [
     id: "equip",
     // Open Bible — warm candlelight tones
     imageSrc:
-      "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=600&q=80",
+      "/equip.jpg",
     imageAlt: "Open Bible with warm light",
     title: "EQUIP",
     description: "Be strengthened through\nthe Word",
@@ -38,7 +38,7 @@ const featureCards: FeatureCard[] = [
     id: "engage",
     // People praying together / community
     imageSrc:
-      "https://images.unsplash.com/photo-1465188162913-8fb5709d6d57?w=600&q=80",
+      "engage.jpg",
     imageAlt: "Community praying together",
     title: "ENGAGE",
     description: "Build a community\nthat lasts",
@@ -97,12 +97,12 @@ export default function AboutSection() {
               }}
             >
               <p>
-                Not your name. <br/>
-                Not your marks. <br/>
-                Not your achievements. <br/>
+                Not your name. <br />
+                Not your marks. <br />
+                Not your achievements. <br />
                 Not your failures.
               </p>
-              
+
               <p className="text-[var(--text)] font-semibold text-[0.9rem]">
                 Then who are you, really?
               </p>
