@@ -219,7 +219,22 @@ export async function generateTicketPdf(payload: TicketPayload): Promise<void> {
     doc.text(fitText(doc, value, colGap - 3), x, fieldValueY);
   };
 
-  drawField("College", participant.college, MARGIN);
+  const collegeAbbreviations: Record<string, string> = {
+    "St Joseph's College of Engineering and Technology, Choondacherry": "SJCET",
+    "St Joseph's Institute of Hotel Management and Catering Technology, Choondacherry": "SJIHMCT",
+    "Alphonsa College, Pala": "ACP",
+    "Devamatha College, Kuravilangad": "DCK",
+    "St Thomas College, Pala": "STC",
+    "St Joseph's College, Moolamattom": "SJCM",
+    "St George's College, Aruvithara": "SGC",
+    "St Stephen's College, Uzhavoor": "SSC",
+    "Bishop Vayalil Memorial Holy Cross College, Cherpunkal": "BVM",
+    "+2 Passout": "+2 Passout"
+  };
+
+  const displayCollege = collegeAbbreviations[participant.college] || participant.college;
+
+  drawField("College", displayCollege, MARGIN);
   drawField("Parish", participant.parish, MARGIN + colGap);
 
   // ── 10. Footer — ticket number + registration timestamp ───────
