@@ -18,6 +18,7 @@ type FormData = {
   diocese: string;
   parentName: string;
   parentPhone: string;
+  address: string;
   confirmed: boolean;
 };
 
@@ -40,6 +41,7 @@ const FIELD_LABELS: Record<string, string> = {
   diocese: "Diocese",
   parentName: "Parent / Guardian Name",
   parentPhone: "Parent / Guardian Phone",
+  address: "Address",
   confirmed: "Confirmation checkbox",
 };
 
@@ -66,6 +68,7 @@ export default function RegistrationForm() {
     diocese: "",
     parentName: "",
     parentPhone: "",
+    address: "",
     confirmed: false,
   });
 
@@ -214,6 +217,14 @@ export default function RegistrationForm() {
         return "";
       }
 
+      // ── Address ────────────────────────────────────────────────────────────
+      case "address": {
+        const v = value as string;
+        if (v.trim().length < 10) return "Address must be at least 10 characters.";
+        if (v.length > 200) return "Address must not exceed 200 characters.";
+        return "";
+      }
+
       // ── Confirmation checkbox ───────────────────────────────────────────────
       case "confirmed":
         return value === true ? "" : "You must confirm to proceed.";
@@ -287,7 +298,7 @@ export default function RegistrationForm() {
   };
 
   const validateStep2 = () => {
-    const step2Fields: (keyof FormData)[] = ["parish", "diocese", "parentName", "parentPhone", "confirmed"];
+    const step2Fields: (keyof FormData)[] = ["parish", "diocese", "address", "parentName", "parentPhone", "confirmed"];
     const newErrors: FormErrors = {};
     let isValid = true;
 
@@ -640,6 +651,14 @@ export default function RegistrationForm() {
                     <FormField
                       label="Diocese Name" name="diocese" type="text" placeholder="Pala"
                       value={formData.diocese} onChange={handleChange} onBlur={handleBlur} error={errors.diocese} touched={touched.diocese}
+                      disabled={isLoading}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1">
+                    <FormField
+                      label="Address" name="address" type="text" placeholder="House Name, Street, City"
+                      value={formData.address} onChange={handleChange} onBlur={handleBlur} error={errors.address} touched={touched.address}
                       disabled={isLoading}
                     />
                   </div>
