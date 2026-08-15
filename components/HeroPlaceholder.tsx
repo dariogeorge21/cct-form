@@ -60,12 +60,12 @@ export default function HeroPlaceholder() {
       {/* ── Responsive CSS styling for mobile & desktop backgrounds ── */}
       <style jsx>{`
         .hero-section {
-          width: 100vw;
+          width: 100%;
           aspect-ratio: 16 / 9;
           min-height: 640px;
           background-color: #03090d;
           position: relative;
-          overflow: auto;
+          overflow: hidden;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -97,9 +97,9 @@ export default function HeroPlaceholder() {
         @media (max-width: 768px) {
           .hero-section {
             width: 100% !important;
-            max-width: 100vw !important;
+            max-width: 100% !important;
             aspect-ratio: auto;
-            height: 82dvh !important;
+            height: 82svh !important;
             min-height: 480px !important;
             padding-bottom: 0rem !important;
           }
