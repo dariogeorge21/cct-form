@@ -165,9 +165,20 @@ export default function RegistrationForm() {
         return "";
       }
 
-      // ── College: must be one of the allowed enum values ───────────────────────
       case "college": {
-        const allowed = ["SJCET", "SJIHM", "ACP", "DMC", "STC", "SJC", "SGC", "SSC", "BVMHCC", "+2 Passout", "Other"];
+        const allowed = [
+          "St Joseph's College of Engineering and Technology, Choondacherry",
+          "St Joseph's Institute of Hotel Management and Catering Technology, Choondacherry",
+          "Alphonsa College, Pala",
+          "Devamatha College, Kuravilangad",
+          "St Thomas College, Pala",
+          "St Joseph's College, Moolamattom",
+          "St George's College, Aruvithara",
+          "St Stephen's College, Uzhavoor",
+          "Bishop Vayalil Memorial Holy Cross College, Cherpunkal",
+          "+2 Passout",
+          "Other"
+        ];
         if (!allowed.includes(value as string))
           return "Please select a valid college.";
         return "";
@@ -542,15 +553,15 @@ export default function RegistrationForm() {
                         label="College" name="college"
                         value={formData.college} onChange={handleChange} onBlur={handleBlur} error={errors.college} touched={touched.college}
                         options={[
-                          { value: "SJCET", label: "St Joseph's College of Engineering and Technology, Choondacherry" },
-                          { value: "SJIHM", label: "St Joseph's Institute of Hotel Management and Catering Technology, Choondacherry" },
-                          { value: "ACP", label: "Alphonsa College, Pala" },
-                          { value: "DMC", label: "Devamatha College, Kuravilangad" },
-                          { value: "STC", label: "St Thomas College, Pala" },
-                          { value: "SJC", label: "St Joseph's College, Moolamattom" },
-                          { value: "SGC", label: "St George's College, Aruvithara" },
-                          { value: "SSC", label: "St Stephen's College, Uzhavoor" },
-                          { value: "BVMHCC", label: "Bishop Vayalil Memorial Holy Cross College, Cherpunkal" },
+                          { value: "St Joseph's College of Engineering and Technology, Choondacherry", label: "St Joseph's College of Engineering and Technology, Choondacherry" },
+                          { value: "St Joseph's Institute of Hotel Management and Catering Technology, Choondacherry", label: "St Joseph's Institute of Hotel Management and Catering Technology, Choondacherry" },
+                          { value: "Alphonsa College, Pala", label: "Alphonsa College, Pala" },
+                          { value: "Devamatha College, Kuravilangad", label: "Devamatha College, Kuravilangad" },
+                          { value: "St Thomas College, Pala", label: "St Thomas College, Pala" },
+                          { value: "St Joseph's College, Moolamattom", label: "St Joseph's College, Moolamattom" },
+                          { value: "St George's College, Aruvithara", label: "St George's College, Aruvithara" },
+                          { value: "St Stephen's College, Uzhavoor", label: "St Stephen's College, Uzhavoor" },
+                          { value: "Bishop Vayalil Memorial Holy Cross College, Cherpunkal", label: "Bishop Vayalil Memorial Holy Cross College, Cherpunkal" },
                           { value: "+2 Passout", label: "+2 Passout" },
                           { value: "Other", label: "Other" },
                         ]}

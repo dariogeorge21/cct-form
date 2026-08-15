@@ -27,7 +27,19 @@ const RegistrationSchema = z.object({
   ),
   yearOfStudyOther: z.string().optional(),
   college: z.string().refine(
-    (v) => ["SJCET", "ACP", "DMC", "STC", "SJC", "SGC", "Other"].includes(v),
+    (v) => [
+      "St Joseph's College of Engineering and Technology, Choondacherry",
+      "St Joseph's Institute of Hotel Management and Catering Technology, Choondacherry",
+      "Alphonsa College, Pala",
+      "Devamatha College, Kuravilangad",
+      "St Thomas College, Pala",
+      "St Joseph's College, Moolamattom",
+      "St George's College, Aruvithara",
+      "St Stephen's College, Uzhavoor",
+      "Bishop Vayalil Memorial Holy Cross College, Cherpunkal",
+      "+2 Passout",
+      "Other"
+    ].includes(v),
     { message: "Invalid college name." }
   ),
   collegeOther: z.string().optional(),
