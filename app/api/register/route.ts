@@ -22,7 +22,7 @@ const RegistrationSchema = z.object({
   gender: z.enum(["male", "female"], { message: "Gender must be male or female." }),
   yearOfStudy: z.string().refine(
     (v) => ["UG - 1st Year", "UG - 2nd Year", "UG - 3rd Year", "UG - 4th Year",
-             "PG - 1st Year", "PG - 2nd Year", "Other"].includes(v),
+      "PG - 1st Year", "PG - 2nd Year", "Other"].includes(v),
     { message: "Invalid year of study." }
   ),
   yearOfStudyOther: z.string().optional(),
@@ -231,25 +231,25 @@ export async function POST(request: Request) {
   const { data: registration, error: insertError } = await supabase
     .from("registrations")
     .insert({
-      event_id:          event.id,
+      event_id: event.id,
       registration_type: "ONLINE",
-      name:              data.name.trim(),
-      dob:               data.dob,
-      phone:             data.phone.trim(),
-      email:             data.email.toLowerCase().trim(),
-      gender:            data.gender,
+      name: data.name.trim(),
+      dob: data.dob,
+      phone: data.phone.trim(),
+      email: data.email.toLowerCase().trim(),
+      gender: data.gender,
       // Resolve "Other" — store the custom text the user typed, not the literal "Other"
-      year_of_study:     data.yearOfStudy === "Other"
-                           ? (data.yearOfStudyOther ?? "").trim()
-                           : data.yearOfStudy,
-      college:           data.college === "Other"
-                           ? (data.collegeOther ?? "").trim()
-                           : data.college,
-      parish:            data.parish.trim(),
-      diocese:           data.diocese.trim(),
-      parent_name:       data.parentName.trim(),
-      parent_phone:      data.parentPhone.trim(),
-      confirmed:         true,
+      year_of_study: data.yearOfStudy === "Other"
+        ? (data.yearOfStudyOther ?? "").trim()
+        : data.yearOfStudy,
+      college: data.college === "Other"
+        ? (data.collegeOther ?? "").trim()
+        : data.college,
+      parish: data.parish.trim(),
+      diocese: data.diocese.trim(),
+      parent_name: data.parentName.trim(),
+      parent_phone: data.parentPhone.trim(),
+      confirmed: true,
     })
     .select("id")
     .single();
@@ -295,7 +295,7 @@ export async function POST(request: Request) {
     .from("tickets")
     .insert({
       registration_id: registration.id,
-      token_hash:      tokenHash,
+      token_hash: tokenHash,
     });
 
   if (ticketError) {
@@ -311,23 +311,23 @@ export async function POST(request: Request) {
       registrationId: registration.id,
       message: "Registration successful!",
       ticket: {
-        tokenHash:    tokenHash,
+        tokenHash: tokenHash,
         ticketNumber: ticketId,
         issuedAt,
       },
       participant: {
-        name:        data.name.trim(),
-        parish:      data.parish.trim(),
-        diocese:     data.diocese.trim(),
-        college:     data.college === "Other" ? (data.collegeOther ?? "").trim() : data.college,
+        name: data.name.trim(),
+        parish: data.parish.trim(),
+        diocese: data.diocese.trim(),
+        college: data.college === "Other" ? (data.collegeOther ?? "").trim() : data.college,
         yearOfStudy: data.yearOfStudy === "Other" ? (data.yearOfStudyOther ?? "").trim() : data.yearOfStudy,
-        gender:      data.gender,
-        phone:       data.phone.trim(),
-        email:       data.email.toLowerCase().trim(),
-        dob:         data.dob,
+        gender: data.gender,
+        phone: data.phone.trim(),
+        email: data.email.toLowerCase().trim(),
+        dob: data.dob,
       },
       event: {
-        name:     "ORAH 2026",
+        name: "ORAH 2026",
         location: "Pala, Kerala",
       },
     },

@@ -403,6 +403,31 @@ export default function RegistrationForm() {
     );
   }
 
+  // ── Submitting overlay (animated) ───────────────────────────────────────
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-6 pointer-events-auto">
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" aria-hidden="true" />
+        <div role="status" aria-live="polite" className="relative z-10 w-full max-w-md p-8 bg-[var(--bg-card)]/95 border border-[var(--border)] rounded-2xl shadow-2xl text-center animate-fade-up">
+          <div className="mx-auto w-20 h-20 rounded-full flex items-center justify-center mb-4 bg-gradient-to-br from-[var(--gold-muted)] to-[var(--gold)] p-1">
+            <div className="rounded-full bg-[var(--bg-card)] p-3">
+              <Loader2 className="w-6 h-6 text-[var(--gold)] animate-spin" />
+            </div>
+          </div>
+          <p className="eyebrow mb-2">Submitting</p>
+          <h3 className="text-2xl font-semibold mb-2">Sending your registration</h3>
+          <p className="text-sm text-[var(--text-muted)] max-w-xs mx-auto">Please wait a moment while we save your details and prepare your ticket.</p>
+
+          <div className="mt-5 flex items-center justify-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-[var(--gold)] animate-pulse [animation-delay:-0.2s]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[var(--gold)] animate-pulse [animation-delay:-0.1s]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[var(--gold-muted)] animate-pulse" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // ── Success screen ───────────────────────────────────────────────────────────
   if (submitted) {
     return (
