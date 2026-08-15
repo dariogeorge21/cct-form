@@ -46,7 +46,7 @@ export default function HeroPlaceholder() {
           style={{
             position: "relative",
             zIndex: 2,
-            // top: "20px",
+            bottom: "20px",
             display: "inline-flex",
             alignItems: "center",
             justifyContent: "center",
@@ -144,26 +144,10 @@ export default function HeroPlaceholder() {
           justify-content: center;
         }
 
-        /* ── Pulse rings ── */
-        .pulse-ring {
-          position: absolute;
-          inset: 0;
-          border-radius: 45px;
-          border: 1.5px solid rgba(212, 175, 55, 0.5);
-          animation: sonarRing 2.8s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
-          pointer-events: none;
-          margin-top: 10px;
-        }
-
-        .ring-2 {
-          animation-delay: 1.4s;
-        }
-
         /* ── Button glow & hover ── */
         .register-btn {
           animation: btnGlow 3s ease-in-out infinite;
           transition: all 0.3s ease;
-          margin-top: 10px;
         }
 
         .register-btn :global(.btn-arrow) {
