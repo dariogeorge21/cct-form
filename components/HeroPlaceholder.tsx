@@ -1,5 +1,7 @@
 "use client";
 
+import { ArrowDown } from "lucide-react";
+
 
 // ─── Hero Section ─────────────────────────────────────────────────────────────
 // Framed hero section.
@@ -32,33 +34,77 @@ export default function HeroPlaceholder() {
         />
       </div>
 
-      {/* ── Register Now Button ── */}
-      <a
-        href="#registration"
-        aria-label="Register Now"
-        className="register-btn"
-        style={{
-          position: "absolute",
-          zIndex: 10,
-          display: "inline-flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "0.8rem 1.8rem",
-          backgroundColor: "var(--gold)",
-          color: "#000",
-          fontWeight: 750,
-          letterSpacing: "0.1em",
-          textTransform: "uppercase",
-          borderRadius: "45px",
-          transition: "all 0.3s ease",
-          cursor: "pointer",
-        }}
-      >
-        Register Now
-      </a>
+      {/* ── Register Now Button with Pulse Rings ── */}
+      <div className="register-btn-wrapper">
+        {/* Sonar ripple rings */}
+        <span className="pulse-ring ring-1" />
+        <span className="pulse-ring ring-2" />
+        <a
+          href="#registration"
+          aria-label="Register Now"
+          className="register-btn"
+          style={{
+            position: "relative",
+            zIndex: 2,
+            // top: "20px",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "0.5rem",
+            padding: "0.75rem 2rem 0.75rem 2.2rem",
+            background: "linear-gradient(135deg, var(--gold) 0%, #e8c547 50%, var(--gold) 100%)",
+            color: "#0a0a0a",
+            fontWeight: 700,
+            fontSize: "0.82rem",
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            borderRadius: "45px",
+            textDecoration: "none",
+            cursor: "pointer",
+          }}
+        >
+          Register Now
+          <ArrowDown size={16} strokeWidth={2.5} className="btn-arrow" />
+        </a>
+      </div>
 
       {/* ── Responsive CSS styling for mobile & desktop backgrounds ── */}
       <style jsx>{`
+        /* ── Keyframes ── */
+        @keyframes sonarRing {
+          0% {
+            transform: scale(1);
+            opacity: 0.45;
+          }
+          80% {
+            opacity: 0;
+          }
+          100% {
+            transform: scale(1.8);
+            opacity: 0;
+          }
+        }
+
+        @keyframes btnGlow {
+          0%, 100% {
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
+          }
+          50% {
+            box-shadow: 0 0 24px rgba(212, 175, 55, 0.5),
+                        0 0 48px rgba(212, 175, 55, 0.15);
+          }
+        }
+
+        @keyframes arrowBounce {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(3px);
+          }
+        }
+
+        /* ── Hero layout ── */
         .hero-section {
           width: 100%;
           aspect-ratio: 16 / 9;
@@ -88,12 +134,56 @@ export default function HeroPlaceholder() {
           z-index: 1;
         }
 
-        .register-btn:hover {
-          background-color: var(--gold-bright);
-          transform: translateY(-2px);
-          box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+        /* ── Button wrapper ── */
+        .register-btn-wrapper {
+          position: absolute;
+          z-index: 10;
+          display: flex;
+          margin-top: 20px;
+          align-items: center;
+          justify-content: center;
         }
 
+        /* ── Pulse rings ── */
+        .pulse-ring {
+          position: absolute;
+          inset: 0;
+          border-radius: 45px;
+          border: 1.5px solid rgba(212, 175, 55, 0.5);
+          animation: sonarRing 2.8s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+          pointer-events: none;
+          margin-top: 10px;
+        }
+
+        .ring-2 {
+          animation-delay: 1.4s;
+        }
+
+        /* ── Button glow & hover ── */
+        .register-btn {
+          animation: btnGlow 3s ease-in-out infinite;
+          transition: all 0.3s ease;
+          margin-top: 10px;
+        }
+
+        .register-btn :global(.btn-arrow) {
+          animation: arrowBounce 1.6s ease-in-out infinite;
+          flex-shrink: 0;
+        }
+
+        .register-btn:hover {
+          background: linear-gradient(135deg, var(--gold-bright) 0%, #f0d44a 50%, var(--gold-bright) 100%);
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6) !important;
+          animation: none;
+        }
+
+        .register-btn:hover :global(.btn-arrow) {
+          animation: none;
+          transform: translateY(1px);
+        }
+
+        /* ── Mobile ── */
         @media (max-width: 768px) {
           .hero-section {
             width: 100% !important;
@@ -102,6 +192,9 @@ export default function HeroPlaceholder() {
             height: 82svh !important;
             min-height: 480px !important;
             padding-bottom: 0rem !important;
+          }
+          .register-btn-wrapper {
+            // bottom: 1.5rem;
           }
           .hero-bg-layer {
             top: 0 !important;
