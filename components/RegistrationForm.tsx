@@ -16,8 +16,6 @@ type FormData = {
   collegeOther: string;
   parish: string;
   diocese: string;
-  parentName: string;
-  parentPhone: string;
   address: string;
   confirmed: boolean;
 };
@@ -39,8 +37,6 @@ const FIELD_LABELS: Record<string, string> = {
   college: "College",
   parish: "Parish",
   diocese: "Diocese",
-  parentName: "Parent / Guardian Name",
-  parentPhone: "Parent / Guardian Phone",
   address: "Address",
   confirmed: "Confirmation checkbox",
 };
@@ -66,8 +62,6 @@ export default function RegistrationForm() {
     collegeOther: "",
     parish: "",
     diocese: "",
-    parentName: "",
-    parentPhone: "",
     address: "",
     confirmed: false,
   });
@@ -98,8 +92,7 @@ export default function RegistrationForm() {
 
     switch (name) {
       // ── Name fields: letters, spaces, hyphens, apostrophes only; 2-120 chars ──
-      case "name":
-      case "parentName": {
+      case "name": {
         const v = value as string;
         if (v.trim().length < 2) return "Name must be at least 2 characters.";
         if (v.length > 120) return "Name must not exceed 120 characters.";
@@ -118,8 +111,7 @@ export default function RegistrationForm() {
       }
 
       // ── Phone numbers: must contain exactly 10 digits (after stripping formatting) ──
-      case "phone":
-      case "parentPhone": {
+      case "phone": {
         const v = value as string;
         const digits = v.replace(/\D/g, "");
         if (digits.length < 10) return "Phone number must have at least 10 digits.";
@@ -180,6 +172,9 @@ export default function RegistrationForm() {
           "St Stephen's College, Uzhavoor",
           "Bishop Vayalil Memorial Holy Cross College, Cherpunkal",
           "+2 Passout",
+          "IELTS",
+          "German",
+          "SSC",
           "Other"
         ];
         if (!allowed.includes(value as string))
@@ -298,7 +293,7 @@ export default function RegistrationForm() {
   };
 
   const validateStep2 = () => {
-    const step2Fields: (keyof FormData)[] = ["parish", "diocese", "address", "parentName", "parentPhone", "confirmed"];
+    const step2Fields: (keyof FormData)[] = ["parish", "diocese", "address", "confirmed"];
     const newErrors: FormErrors = {};
     let isValid = true;
 
@@ -586,7 +581,7 @@ export default function RegistrationForm() {
                     {/* College column */}
                     <div className="flex flex-col gap-3">
                       <FormSelect
-                        label="College" name="college"
+                        label="College/Course" name="college"
                         value={formData.college} onChange={handleChange} onBlur={handleBlur} error={errors.college} touched={touched.college}
                         options={[
                           { value: "St Joseph's College of Engineering and Technology, Choondacherry", label: "St Joseph's College of Engineering and Technology, Choondacherry" },
@@ -599,6 +594,9 @@ export default function RegistrationForm() {
                           { value: "St Stephen's College, Uzhavoor", label: "St Stephen's College, Uzhavoor" },
                           { value: "Bishop Vayalil Memorial Holy Cross College, Cherpunkal", label: "Bishop Vayalil Memorial Holy Cross College, Cherpunkal" },
                           { value: "+2 Passout", label: "+2 Passout" },
+                          { value: "IELTS", label: "IELTS" },
+                          { value: "German", label: "German" },
+                          { value: "SSC", label: "SSC" },
                           { value: "Other", label: "Other" },
                         ]}
                         disabled={isLoading}
@@ -659,19 +657,6 @@ export default function RegistrationForm() {
                     <FormField
                       label="Address" name="address" type="text" placeholder="House Name, Street, City"
                       value={formData.address} onChange={handleChange} onBlur={handleBlur} error={errors.address} touched={touched.address}
-                      disabled={isLoading}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-                    <FormField
-                      label="Parent Name" name="parentName" type="text" placeholder="Parent's Full Name"
-                      value={formData.parentName} onChange={handleChange} onBlur={handleBlur} error={errors.parentName} touched={touched.parentName}
-                      disabled={isLoading}
-                    />
-                    <FormField
-                      label="Parent Phone" name="parentPhone" type="tel" placeholder="+91 987654321"
-                      value={formData.parentPhone} onChange={handleChange} onBlur={handleBlur} error={errors.parentPhone} touched={touched.parentPhone}
                       disabled={isLoading}
                     />
                   </div>

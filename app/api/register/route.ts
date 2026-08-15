@@ -38,6 +38,9 @@ const RegistrationSchema = z.object({
       "St Stephen's College, Uzhavoor",
       "Bishop Vayalil Memorial Holy Cross College, Cherpunkal",
       "+2 Passout",
+      "IELTS",
+      "German",
+      "SSC",
       "Other"
     ].includes(v),
     { message: "Invalid college name." }
@@ -46,10 +49,6 @@ const RegistrationSchema = z.object({
   parish: z.string().min(1, "Parish name is required.").max(200),
   diocese: z.string().min(1, "Diocese name is required.").max(200),
   address: z.string().min(10, "Address must be at least 10 characters.").max(200, "Address must not exceed 200 characters."),
-  parentName: z.string().min(2, "Parent name must be at least 2 characters.").max(120),
-  parentPhone: z
-    .string()
-    .regex(/^\+?[\d\s\-]{10,}$/, "Enter a valid parent phone number."),
   confirmed: z.literal(true, {
     message: "You must confirm to submit.",
   }),
@@ -249,8 +248,6 @@ export async function POST(request: Request) {
       parish: data.parish.trim(),
       diocese: data.diocese.trim(),
       address: data.address.trim(),
-      parent_name: data.parentName.trim(),
-      parent_phone: data.parentPhone.trim(),
       confirmed: true,
     })
     .select("id")
