@@ -203,7 +203,7 @@ export default function HeroPlaceholder() {
             right: 0 !important;
             width: 100% !important;
             height: 100% !important;
-            background-image: url('/HeroMobile.png');
+            background-image: url('/HeroMobile.jpeg');
             background-position: center top;
             background-size: cover;
             border-radius: 0 !important;
