@@ -229,6 +229,7 @@ export async function generateTicketPdf(payload: TicketPayload): Promise<void> {
     "St George's College, Aruvithara": "SGC",
     "St Stephen's College, Uzhavoor": "SSC",
     "Bishop Vayalil Memorial Holy Cross College, Cherpunkal": "BVM",
+    "Mar Augusthinose College, Ramapuram": "MAC",
     "+2 Passout": "+2 Passout"
   };
 

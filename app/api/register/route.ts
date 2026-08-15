@@ -37,6 +37,7 @@ const RegistrationSchema = z.object({
       "St George's College, Aruvithara",
       "St Stephen's College, Uzhavoor",
       "Bishop Vayalil Memorial Holy Cross College, Cherpunkal",
+      "Mar Augusthinose College, Ramapuram",
       "+2 Passout",
       "IELTS",
       "German",
