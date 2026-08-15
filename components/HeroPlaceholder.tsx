@@ -24,9 +24,8 @@ export default function HeroPlaceholder() {
             bottom: 0,
             left: 0,
             right: 0,
-            height: "220px",
-            background:
-              "linear-gradient(to bottom, rgba(3,9,13,0) 0%, rgba(3,9,13,0.85) 55%, #03090d 100%)",
+            height: "280px",
+            background: "linear-gradient(to bottom, rgba(3,9,13,0) 0%, rgba(3,9,13,0.85) 95%, #03090d 100%)",
             pointerEvents: "none",
             zIndex: 2,
           }}
@@ -39,7 +38,7 @@ export default function HeroPlaceholder() {
         aria-label="Register Now"
         className="register-btn"
         style={{
-          position: "relative",
+          position: "absolute",
           zIndex: 10,
           display: "inline-flex",
           alignItems: "center",
@@ -47,12 +46,10 @@ export default function HeroPlaceholder() {
           padding: "0.8rem 1.8rem",
           backgroundColor: "var(--gold)",
           color: "#000",
-          textDecoration: "none",
           fontWeight: 750,
           letterSpacing: "0.1em",
           textTransform: "uppercase",
           borderRadius: "45px",
-          boxShadow: "0 4px 15px rgba(212, 175, 55, 0.4)",
           transition: "all 0.3s ease",
           cursor: "pointer",
         }}
@@ -113,7 +110,6 @@ export default function HeroPlaceholder() {
             height: auto;
             background-image: url('/HeroMobile.png');
             background-position: center top;
-            // background-size: cover;
             border-radius: 12px;
           }
         }

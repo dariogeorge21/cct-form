@@ -41,7 +41,7 @@ const jsonLd = {
   "organizer": {
     "@type": "Organization",
     "name": "Jesus Youth Pala",
-    "url": "https://jesusyouth.org" // replace with actual URL if known
+    "url": "https://www.instagram.com/jesus_youth_pala/" // replace with actual URL if known
   }
 };
 
