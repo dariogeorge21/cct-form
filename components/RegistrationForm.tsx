@@ -24,13 +24,32 @@ type FormData = {
 type FormErrors = Partial<Record<keyof FormData, string>>;
 type FormTouched = Partial<Record<keyof FormData, boolean>>;
 
+type SubmitError =
+  | { kind: "message"; text: string }
+  | { kind: "fields"; items: string[] };
+
+const FIELD_LABELS: Record<string, string> = {
+  name: "Full Name",
+  dob: "Date of Birth",
+  phone: "Phone Number",
+  email: "Email Address",
+  gender: "Gender",
+  yearOfStudy: "Year of Study",
+  college: "College",
+  parish: "Parish",
+  diocese: "Diocese",
+  parentName: "Parent / Guardian Name",
+  parentPhone: "Parent / Guardian Phone",
+  confirmed: "Confirmation checkbox",
+};
+
 export default function RegistrationForm() {
   const [step, setStep] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<SubmitError | null>(null);
   const [ticketData, setTicketData] = useState<TicketPayload | null>(null);
 
   const [formData, setFormData] = useState<FormData>({
@@ -148,7 +167,7 @@ export default function RegistrationForm() {
 
       // ── College: must be one of the allowed enum values ───────────────────────
       case "college": {
-        const allowed = ["SJCET", "ACP", "DMC", "STC", "SJC", "SGC", "Other"];
+        const allowed = ["SJCET", "SJIHM", "ACP", "DMC", "STC", "SJC", "SGC", "SSC", "BVMHCC", "+2 Passout", "Other"];
         if (!allowed.includes(value as string))
           return "Please select a valid college.";
         return "";
@@ -335,18 +354,22 @@ export default function RegistrationForm() {
 
       // Map known error codes to user-friendly messages
       if (result.code === "DUPLICATE_EMAIL") {
-        setSubmitError("This email address is already registered for this event.");
+        setSubmitError({ kind: "message", text: "This email address is already registered for this event." });
       } else if (result.code === "EVENT_CLOSED") {
-        setSubmitError("Registrations are currently closed. Please check back later.");
+        setSubmitError({ kind: "message", text: "Registrations are currently closed. Please check back later." });
       } else if (result.code === "EVENT_FULL") {
-        setSubmitError("Registrations are full. No more spots are available.");
+        setSubmitError({ kind: "message", text: "Registrations are full. No more spots are available." });
       } else if (response.status === 400 && result.fieldErrors) {
-        setSubmitError("Some fields are invalid. Please review your details and try again.");
+        const items = Object.entries(result.fieldErrors as Record<string, string[]>).map(
+          ([field, msgs]) =>
+            `${FIELD_LABELS[field] ?? field}: ${(msgs as string[]).join(", ")}`
+        );
+        setSubmitError({ kind: "fields", items });
       } else {
-        setSubmitError(result.error ?? "Something went wrong. Please try again.");
+        setSubmitError({ kind: "message", text: result.error ?? "Something went wrong. Please try again." });
       }
     } catch {
-      setSubmitError("Network error. Please check your connection and try again.");
+      setSubmitError({ kind: "message", text: "Network error. Please check your connection and try again." });
     } finally {
       setIsLoading(false);
       setIsDownloading(false);
@@ -519,12 +542,16 @@ export default function RegistrationForm() {
                         label="College" name="college"
                         value={formData.college} onChange={handleChange} onBlur={handleBlur} error={errors.college} touched={touched.college}
                         options={[
-                          { value: "SJCET", label: "SJCET" },
-                          { value: "ACP", label: "ACP" },
-                          { value: "DMC", label: "DMC" },
-                          { value: "STC", label: "STC" },
-                          { value: "SJC", label: "SJC" },
-                          { value: "SGC", label: "SGC" },
+                          { value: "SJCET", label: "St Joseph's College of Engineering and Technology, Choondacherry" },
+                          { value: "SJIHM", label: "St Joseph's Institute of Hotel Management and Catering Technology, Choondacherry" },
+                          { value: "ACP", label: "Alphonsa College, Pala" },
+                          { value: "DMC", label: "Devamatha College, Kuravilangad" },
+                          { value: "STC", label: "St Thomas College, Pala" },
+                          { value: "SJC", label: "St Joseph's College, Moolamattom" },
+                          { value: "SGC", label: "St George's College, Aruvithara" },
+                          { value: "SSC", label: "St Stephen's College, Uzhavoor" },
+                          { value: "BVMHCC", label: "Bishop Vayalil Memorial Holy Cross College, Cherpunkal" },
+                          { value: "+2 Passout", label: "+2 Passout" },
                           { value: "Other", label: "Other" },
                         ]}
                         disabled={isLoading}
@@ -620,7 +647,22 @@ export default function RegistrationForm() {
                 {submitError && (
                   <div className="flex items-start gap-3 p-4 rounded-lg border border-[var(--destructive)] bg-[var(--destructive)]/10 animate-fade-up">
                     <AlertCircle className="w-4 h-4 text-[var(--destructive)] shrink-0 mt-0.5" />
-                    <p className="text-[var(--destructive)] text-xs leading-relaxed">{submitError}</p>
+                    <div className="flex-1">
+                      {submitError.kind === "fields" ? (
+                        <>
+                          <p className="text-[var(--destructive)] text-xs font-semibold mb-1.5">
+                            Please fix the following fields before submitting:
+                          </p>
+                          <ul className="text-[var(--destructive)] text-xs space-y-0.5 list-disc list-inside">
+                            {submitError.items.map((item, i) => (
+                              <li key={i}>{item}</li>
+                            ))}
+                          </ul>
+                        </>
+                      ) : (
+                        <p className="text-[var(--destructive)] text-xs leading-relaxed">{submitError.text}</p>
+                      )}
+                    </div>
                   </div>
                 )}
 
@@ -641,9 +683,23 @@ export default function RegistrationForm() {
                     className="btn-fill-gold flex-1 flex items-center justify-center gap-2 group py-4 text-[0.9rem] font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isLoading ? (
-                      <><Loader2 className="w-4 h-4 animate-spin" /> Submitting…</>
+                      <span className="flex items-center gap-1.5">
+                        Submitting
+                        <span className="flex gap-1 items-center translate-y-[2px]">
+                          <span className="w-1 h-1 rounded-full bg-current animate-bounce [animation-delay:-0.3s]"></span>
+                          <span className="w-1 h-1 rounded-full bg-current animate-bounce [animation-delay:-0.15s]"></span>
+                          <span className="w-1 h-1 rounded-full bg-current animate-bounce"></span>
+                        </span>
+                      </span>
                     ) : isDownloading ? (
-                      <><Loader2 className="w-4 h-4 animate-spin" /> Generating ticket…</>
+                      <span className="flex items-center gap-1.5">
+                        Generating ticket
+                        <span className="flex gap-1 items-center translate-y-[2px]">
+                          <span className="w-1 h-1 rounded-full bg-current animate-bounce [animation-delay:-0.3s]"></span>
+                          <span className="w-1 h-1 rounded-full bg-current animate-bounce [animation-delay:-0.15s]"></span>
+                          <span className="w-1 h-1 rounded-full bg-current animate-bounce"></span>
+                        </span>
+                      </span>
                     ) : (
                       <>Submit <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></>
                     )}
@@ -659,7 +715,9 @@ export default function RegistrationForm() {
               <h5 className="text-sm font-semibold text-[var(--text)] uppercase tracking-wider mb-1">Ready to Register?</h5>
               <p className="text-xs text-[var(--text-muted)]">
                 {submitError
-                  ? <span className="text-[var(--destructive)] flex items-center gap-1.5"><AlertCircle className="w-3.5 h-3.5" />{submitError}</span>
+                  ? submitError.kind === "fields"
+                    ? <span className="text-[var(--destructive)] flex items-center gap-1.5"><AlertCircle className="w-3.5 h-3.5" />{submitError.items.length} field{submitError.items.length > 1 ? "s need" : " needs"} attention — see above.</span>
+                    : <span className="text-[var(--destructive)] flex items-center gap-1.5"><AlertCircle className="w-3.5 h-3.5" />{submitError.text}</span>
                   : "Please review your information before final submission."
                 }
               </p>
@@ -670,9 +728,23 @@ export default function RegistrationForm() {
               className="btn-fill-gold flex items-center justify-center gap-2 group px-8 py-4 text-[0.9rem] font-semibold rounded disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none min-w-[200px]"
             >
               {isLoading ? (
-                <><Loader2 className="w-4 h-4 animate-spin" /> Submitting…</>
+                <span className="flex items-center gap-1.5">
+                  Submitting
+                  <span className="flex gap-1 items-center translate-y-[2px]">
+                    <span className="w-1 h-1 rounded-full bg-current animate-bounce [animation-delay:-0.3s]"></span>
+                    <span className="w-1 h-1 rounded-full bg-current animate-bounce [animation-delay:-0.15s]"></span>
+                    <span className="w-1 h-1 rounded-full bg-current animate-bounce"></span>
+                  </span>
+                </span>
               ) : isDownloading ? (
-                <><Loader2 className="w-4 h-4 animate-spin" /> Generating ticket…</>
+                <span className="flex items-center gap-1.5">
+                  Generating ticket
+                  <span className="flex gap-1 items-center translate-y-[2px]">
+                    <span className="w-1 h-1 rounded-full bg-current animate-bounce [animation-delay:-0.3s]"></span>
+                    <span className="w-1 h-1 rounded-full bg-current animate-bounce [animation-delay:-0.15s]"></span>
+                    <span className="w-1 h-1 rounded-full bg-current animate-bounce"></span>
+                  </span>
+                </span>
               ) : (
                 <>Submit Registration <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></>
               )}
