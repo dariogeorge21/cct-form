@@ -521,7 +521,7 @@ export default function RegistrationForm() {
 
                 <div className="space-y-6">
                   <FormField
-                    label="Full Name" name="name" type="text" placeholder="Dario George"
+                    label="Full Name" name="name" type="text" placeholder="Your Name"
                     value={formData.name} onChange={handleChange} onBlur={handleBlur} error={errors.name} touched={touched.name}
                     disabled={isLoading}
                   />
