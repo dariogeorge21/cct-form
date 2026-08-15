@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 
 // ─── CountdownTimer Component ────────────────────────────────────────────────
-// Target: September 18, 2026 at 5:00 PM (17:00:00)
+// Target: September 19, 2026 at 5:00 PM (17:00:00)
 // Awwwards-styled minimal luxury aesthetic:
 // - High-contrast display numbers with Barlow Condensed typography
 // - Glassmorphic translucent dark container with gold border accents
@@ -11,7 +11,7 @@ import React, { useState, useEffect } from "react";
 // - SSR-safe hydration handling
 // ─────────────────────────────────────────────────────────────────────────────
 
-const TARGET_DATE = new Date("2026-09-18T17:00:00").getTime();
+const TARGET_DATE = new Date("2026-09-19T17:00:00").getTime();
 
 interface TimeLeft {
   days: number;

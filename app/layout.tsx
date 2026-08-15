@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   publisher: "Jesus Youth Pala",
   openGraph: {
     title: "ORAH 2026 — Jesus Youth Pala",
-    description: "A Call to Truth. A Life Transformed. Sep 18–21, 2026 at St Thomas College, Pala.",
+    description: "A Call to Truth. A Life Transformed. Sep 19–21, 2026 at St Thomas College, Pala.",
     type: "website",
     locale: "en_IN",
     siteName: "ORAH 2026",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "ORAH 2026 — Jesus Youth Pala",
-    description: "A Call to Truth. A Life Transformed. Sep 18–21, 2026 at St Thomas College, Pala.",
+    description: "A Call to Truth. A Life Transformed. Sep 19–21, 2026 at St Thomas College, Pala.",
   },
   robots: {
     index: true,
