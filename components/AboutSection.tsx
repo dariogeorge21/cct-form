@@ -112,7 +112,7 @@ export default function AboutSection() {
               </p>
 
               <p>
-                <strong className="text-[var(--text)]">ORAH</strong> is a four-day journey to discover the answer to one of life&apos;s deepest questions: &quot;Who am I?&quot;
+                <strong className="text-[var(--text)]">ORAH</strong> is a three-day journey to discover the answer to one of life&apos;s deepest questions: &quot;Who am I?&quot;
               </p>
 
               <p>
