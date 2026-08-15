@@ -63,7 +63,7 @@ export default function Home() {
         aria-label="Event Countdown"
         style={{
           backgroundColor: "var(--bg)",
-          padding: "3.5rem 0",
+          padding: "2rem 0",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",

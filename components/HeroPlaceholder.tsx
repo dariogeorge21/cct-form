@@ -96,21 +96,24 @@ export default function HeroPlaceholder() {
 
         @media (max-width: 768px) {
           .hero-section {
+            width: 100% !important;
+            max-width: 100vw !important;
             aspect-ratio: auto;
             height: 82dvh !important;
             min-height: 480px !important;
             padding-bottom: 0rem !important;
           }
           .hero-bg-layer {
-            top: 6rem;
-            bottom: 1.25rem;
-            left: 1.25rem;
-            right: 1.25rem;
-            width: auto;
-            height: auto;
+            top: 0 !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
             background-image: url('/HeroMobile.png');
             background-position: center top;
-            border-radius: 12px;
+            background-size: cover;
+            border-radius: 0 !important;
           }
         }
       `}</style>
