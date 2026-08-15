@@ -23,7 +23,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Event",
   "name": "ORAH 2026 — Jesus Youth Pala",
-  "startDate": "2026-09-18T17:00:00+05:30",
+  "startDate": "2026-09-19T17:00:00+05:30",
   "endDate": "2026-09-21T14:00:00+05:30",
   "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
   "eventStatus": "https://schema.org/EventScheduled",
@@ -37,7 +37,7 @@ const jsonLd = {
       "addressCountry": "IN"
     }
   },
-  "description": "ORAH is a divine encounter for youth and young adults by Jesus Youth Pala. September 18–21, 2026 at St Thomas College, Pala. Four days of worship, the Word, community, and mission.",
+  "description": "ORAH is a divine encounter for youth and young adults by Jesus Youth Pala. September 19–21, 2026 at St Thomas College, Pala. Three days of worship, the Word, community, and mission.",
   "organizer": {
     "@type": "Organization",
     "name": "Jesus Youth Pala",

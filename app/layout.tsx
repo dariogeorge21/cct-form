@@ -18,7 +18,7 @@ const barlowCondensed = Barlow_Condensed({
 export const metadata: Metadata = {
   title: "ORAH 2026 — Jesus Youth Pala | A Call to Truth. A Life Transformed.",
   description:
-    "ORAH is a divine encounter for youth and young adults by Jesus Youth Pala. September 18–21, 2026 at St Thomas College, Pala. Four days of worship, the Word, community, and mission.",
+    "ORAH is a divine encounter for youth and young adults by Jesus Youth Pala. September 19–21, 2026 at St Thomas College, Pala. Three days of worship, the Word, community, and mission.",
   keywords: [
     "ORAH",
     "Jesus Youth Pala",

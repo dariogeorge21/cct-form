@@ -482,7 +482,7 @@ export default function Header() {
               }}
             >
               <Calendar size={14} style={{ color: "var(--gold)" }} />
-              <span>September 18 – 21, 2026</span>
+              <span>September 19 – 21, 2026</span>
             </div>
 
             <div
