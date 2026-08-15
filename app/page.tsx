@@ -83,7 +83,7 @@ export default function Home() {
 
       {/* 4. Registration Form Section */}
       <section
-        id="register"
+        id="registration"
         aria-label="Registration"
         style={{ backgroundColor: "var(--bg)", padding: "5rem 0" }}
       >

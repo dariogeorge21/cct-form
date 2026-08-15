@@ -1,6 +1,5 @@
 "use client";
 
-import { ChevronDown } from "lucide-react";
 
 // ─── Hero Section ─────────────────────────────────────────────────────────────
 // Framed hero section.
@@ -34,56 +33,42 @@ export default function HeroPlaceholder() {
         />
       </div>
 
-      {/* ── Scroll Down Indicator Cue ── */}
+      {/* ── Register Now Button ── */}
       <a
-        href="#about"
-        aria-label="Scroll to content"
+        href="#registration"
+        aria-label="Register Now"
+        className="register-btn"
         style={{
           position: "relative",
           zIndex: 10,
-          display: "flex",
-          flexDirection: "column",
+          display: "inline-flex",
           alignItems: "center",
-          gap: "0.25rem",
-          color: "var(--gold-bright)",
+          justifyContent: "center",
+          padding: "0.8rem 1.8rem",
+          backgroundColor: "var(--gold)",
+          color: "#000",
           textDecoration: "none",
-          opacity: 0.85,
-          transition: "opacity 0.3s ease, transform 0.3s ease",
+          fontWeight: 750,
+          letterSpacing: "0.1em",
+          textTransform: "uppercase",
+          borderRadius: "45px",
+          boxShadow: "0 4px 15px rgba(212, 175, 55, 0.4)",
+          transition: "all 0.3s ease",
           cursor: "pointer",
         }}
-        className="scroll-indicator"
       >
-        <span
-          style={{
-            fontSize: "0.58rem",
-            fontWeight: 700,
-            letterSpacing: "0.22em",
-            textTransform: "uppercase",
-            color: "var(--gold)",
-            textShadow: "0 2px 10px rgba(0,0,0,0.8)",
-          }}
-        >
-          SCROLL TO EXPLORE
-        </span>
-        <ChevronDown
-          size={16}
-          className="animate-bounce"
-          style={{
-            color: "var(--gold-bright)",
-            filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.8))",
-          }}
-        />
+        Register Now
       </a>
 
       {/* ── Responsive CSS styling for mobile & desktop backgrounds ── */}
       <style jsx>{`
         .hero-section {
-          width: 100%;
+          width: 100vw;
           aspect-ratio: 16 / 9;
           min-height: 640px;
           background-color: #03090d;
           position: relative;
-          overflow: hidden;
+          overflow: auto;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -106,9 +91,10 @@ export default function HeroPlaceholder() {
           z-index: 1;
         }
 
-        .scroll-indicator:hover {
-          opacity: 1 !important;
-          transform: translateY(3px);
+        .register-btn:hover {
+          background-color: var(--gold-bright);
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
         }
 
         @media (max-width: 768px) {
@@ -116,7 +102,7 @@ export default function HeroPlaceholder() {
             aspect-ratio: auto;
             height: 82dvh !important;
             min-height: 480px !important;
-            padding-bottom: 1.5rem !important;
+            padding-bottom: 0rem !important;
           }
           .hero-bg-layer {
             top: 6rem;
@@ -127,9 +113,8 @@ export default function HeroPlaceholder() {
             height: auto;
             background-image: url('/HeroMobile.png');
             background-position: center top;
-            background-size: cover;
+            // background-size: cover;
             border-radius: 12px;
-            border: 1px solid var(--border-subtle);
           }
         }
       `}</style>
