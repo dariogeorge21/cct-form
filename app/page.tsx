@@ -81,24 +81,6 @@ export default function Home() {
       {/* Thin divider */}
       <div style={{ borderTop: "1px solid var(--border-subtle)" }} />
 
-      {/* 4. Registration Form Section */}
-      <section
-        id="registration"
-        aria-label="Registration"
-        style={{ backgroundColor: "var(--bg)", padding: "5rem 0" }}
-      >
-        <div className="container-orah">
-          <div
-            style={{
-              maxWidth: "2048px",
-              margin: "0 auto",
-            }}
-          >
-            <RegistrationForm />
-          </div>
-        </div>
-      </section>
-
       {/* Thin divider */}
       <div style={{ borderTop: "1px solid var(--border-subtle)" }} />
 

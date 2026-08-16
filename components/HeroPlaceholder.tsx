@@ -40,7 +40,7 @@ export default function HeroPlaceholder() {
         <span className="pulse-ring ring-1" />
         <span className="pulse-ring ring-2" />
         <a
-          href="#registration"
+          href="/register"
           aria-label="Register Now"
           className="register-btn"
           style={{

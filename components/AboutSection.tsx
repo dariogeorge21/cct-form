@@ -128,7 +128,7 @@ export default function AboutSection() {
               </p>
             </div>
 
-            <a href="#register" className="btn-outline-gold mt-2">
+            <a href="/register" className="btn-outline-gold mt-2">
               Register Now
             </a>
           </div>
