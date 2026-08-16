@@ -190,7 +190,7 @@ export default function Footer() {
                 fontWeight: 400,
               }}
             >
-              ORAH is a four-day journey to discover the answer to one of life&apos;s deepest questions: &quot;Who am I?&quot;
+              ORAH is a three-day journey to discover the answer to one of life&apos;s deepest questions: &quot;Who am I?&quot;
               <br /><br />
               <strong className="text-[var(--text)]">Discover the Light. Discover Your Identity.</strong>
             </p>
