@@ -226,7 +226,7 @@ export async function generateTicketPdf(payload: TicketPayload): Promise<void> {
     "Devamatha College, Kuravilangad": "DCK",
     "St Thomas College, Pala": "STC",
     "St Joseph's College, Moolamattom": "SJCM",
-    "St George's College, Aruvithara": "SGC",
+    "St George's College, Aruvithura": "SGC",
     "St Stephen's College, Uzhavoor": "SSC",
     "Bishop Vayalil Memorial Holy Cross College, Cherpunkal": "BVM",
     "Mar Augusthinose College, Ramapuram": "MAC",

@@ -34,7 +34,7 @@ const RegistrationSchema = z.object({
       "Devamatha College, Kuravilangad",
       "St Thomas College, Pala",
       "St Joseph's College, Moolamattom",
-      "St George's College, Aruvithara",
+      "St George's College, Aruvithura",
       "St Stephen's College, Uzhavoor",
       "Bishop Vayalil Memorial Holy Cross College, Cherpunkal",
       "Mar Augusthinose College, Ramapuram",
