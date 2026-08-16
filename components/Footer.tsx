@@ -94,9 +94,9 @@ const JYLogoMark = () => (
 );
 
 const quickLinks = [
-  { label: "Home", href: "#" },
-  { label: "About", href: "#about" },
-  { label: "Register", href: "#register" },
+  { label: "Home", href: "/#" },
+  { label: "About", href: "/#about" },
+  { label: "Register", href: "/register" },
   { label: "Contact", href: "tel:9400389831" },
 ];
 

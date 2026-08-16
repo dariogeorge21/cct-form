@@ -21,11 +21,10 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { id: "home", label: "HOME", href: "#" },
-  { id: "about", label: "ABOUT", href: "#about" },
-  { id: "register", label: "REGISTER", href: "#register" },
-  { id: "venue", label: "VENUE", href: "#venue" },
-
+  { id: "home", label: "HOME", href: "/#" },
+  { id: "about", label: "ABOUT", href: "/#about" },
+  { id: "register", label: "REGISTER", href: "/register" },
+  { id: "venue", label: "VENUE", href: "/#venue" },
 ];
 
 export default function Header() {
@@ -220,7 +219,7 @@ export default function Header() {
                 {navItems.map((item) => {
                   const isActive =
                     (item.href === "#about" && activeSection === "about") ||
-                    (item.href === "#register" &&
+                    (item.href === "/register" &&
                       activeSection === "register") ||
                     (item.href === "#event-info" &&
                       activeSection === "event-info");
@@ -301,7 +300,7 @@ export default function Header() {
 
                 {/* Primary CTA Button */}
                 <a
-                  href="#register"
+                  href="/register"
                   className="cta-header-btn"
                   style={{
                     display: "inline-flex",
@@ -500,7 +499,7 @@ export default function Header() {
           </div>
 
           <a
-            href="#register"
+            href="/register"
             onClick={() => setMobileMenuOpen(false)}
             className="btn-fill-gold"
             style={{

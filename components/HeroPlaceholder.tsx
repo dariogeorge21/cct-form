@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDown } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 
 // ─── Hero Section ─────────────────────────────────────────────────────────────
@@ -64,7 +64,7 @@ export default function HeroPlaceholder() {
           }}
         >
           Register Now
-          <ArrowDown size={16} strokeWidth={2.5} className="btn-arrow" />
+          <ArrowRight size={16} strokeWidth={2.5} className="btn-arrow" />
         </a>
       </div>
 
