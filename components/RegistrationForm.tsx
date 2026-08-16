@@ -10,10 +10,14 @@ type FormData = {
   phone: string;
   email: string;
   gender: string;
-  yearOfStudy: string;
-  yearOfStudyOther: string;
+  affiliation: string;
+  affiliationOther: string;
   college: string;
   collegeOther: string;
+  institute: string;
+  instituteOther: string;
+  yearOfStudy: string;
+  yearOfStudyOther: string;
   parish: string;
   diocese: string;
   address: string;
@@ -33,13 +37,59 @@ const FIELD_LABELS: Record<string, string> = {
   phone: "Phone Number",
   email: "Email Address",
   gender: "Gender",
-  yearOfStudy: "Year of Study",
+  affiliation: "Affiliation",
+  affiliationOther: "Affiliation Specification",
   college: "College",
+  collegeOther: "College Specification",
+  institute: "Institute",
+  instituteOther: "Institute Specification",
+  yearOfStudy: "Year of Study",
+  yearOfStudyOther: "Year of Study Specification",
   parish: "Parish",
   diocese: "Diocese",
   address: "Address",
   confirmed: "Confirmation checkbox",
 };
+
+const AFFILIATION_OPTIONS = [
+  { value: "+2 Passout", label: "+2 Passout" },
+  { value: "College", label: "College" },
+  { value: "Institutes", label: "Institutes" },
+  { value: "Job Seeking", label: "Job Seeking" },
+  { value: "Employed", label: "Employed" },
+  { value: "Other", label: "Other" },
+];
+
+const COLLEGE_OPTIONS = [
+  { value: "St Joseph's College of Engineering and Technology, Choondacherry", label: "St Joseph's College of Engineering and Technology, Choondacherry" },
+  { value: "St Joseph's Institute of Hotel Management and Catering Technology, Choondacherry", label: "St Joseph's Institute of Hotel Management and Catering Technology, Choondacherry" },
+  { value: "Alphonsa College, Pala", label: "Alphonsa College, Pala" },
+  { value: "Devamatha College, Kuravilangad", label: "Devamatha College, Kuravilangad" },
+  { value: "St Thomas College, Pala", label: "St Thomas College, Pala" },
+  { value: "St Joseph's College, Moolamattom", label: "St Joseph's College, Moolamattom" },
+  { value: "St George's College, Aruvithura", label: "St George's College, Aruvithura" },
+  { value: "St Stephen's College, Uzhavoor", label: "St Stephen's College, Uzhavoor" },
+  { value: "Bishop Vayalil Memorial Holy Cross College, Cherpunkal", label: "Bishop Vayalil Memorial Holy Cross College, Cherpunkal" },
+  { value: "Mar Augusthinose College, Ramapuram", label: "Mar Augusthinose College, Ramapuram" },
+  { value: "Other", label: "Other" },
+];
+
+const INSTITUTE_OPTIONS = [
+  { value: "IELTS", label: "IELTS" },
+  { value: "German", label: "German" },
+  { value: "SSC", label: "SSC" },
+  { value: "Other", label: "Other" },
+];
+
+const YEAR_OF_STUDY_OPTIONS = [
+  { value: "UG - 1st Year", label: "UG — 1st Year" },
+  { value: "UG - 2nd Year", label: "UG — 2nd Year" },
+  { value: "UG - 3rd Year", label: "UG — 3rd Year" },
+  { value: "UG - 4th Year", label: "UG — 4th Year" },
+  { value: "PG - 1st Year", label: "PG — 1st Year" },
+  { value: "PG - 2nd Year", label: "PG — 2nd Year" },
+  { value: "Other", label: "Other" },
+];
 
 export default function RegistrationForm() {
   const [step, setStep] = useState(1);
@@ -56,10 +106,14 @@ export default function RegistrationForm() {
     phone: "",
     email: "",
     gender: "",
-    yearOfStudy: "",
-    yearOfStudyOther: "",
+    affiliation: "",
+    affiliationOther: "",
     college: "",
     collegeOther: "",
+    institute: "",
+    instituteOther: "",
+    yearOfStudy: "",
+    yearOfStudyOther: "",
     parish: "",
     diocese: "",
     address: "",
@@ -139,7 +193,73 @@ export default function RegistrationForm() {
         return "";
       }
 
-      // ── Year of Study: must be one of the allowed enum values ───────────────
+      // ── Affiliation: must be one of allowed options ───────────────────────
+      case "affiliation": {
+        const allowed = ["+2 Passout", "College", "Institutes", "Job Seeking", "Employed", "Other"];
+        if (!allowed.includes(value as string))
+          return "Please select a valid affiliation.";
+        return "";
+      }
+
+      // ── affiliationOther: required when affiliation === "Other" ────────────
+      case "affiliationOther": {
+        const v = (value as string).trim();
+        if (v.length < 2) return "Please specify your affiliation (min. 2 characters).";
+        if (v.length > 100) return "Must not exceed 100 characters.";
+        if (!/^[A-Za-z0-9\s\-'.,()]+$/.test(v))
+          return "Contains invalid characters.";
+        return "";
+      }
+
+      // ── College: required when affiliation === "College" ───────────────────
+      case "college": {
+        const allowed = [
+          "St Joseph's College of Engineering and Technology, Choondacherry",
+          "St Joseph's Institute of Hotel Management and Catering Technology, Choondacherry",
+          "Alphonsa College, Pala",
+          "Devamatha College, Kuravilangad",
+          "St Thomas College, Pala",
+          "St Joseph's College, Moolamattom",
+          "St George's College, Aruvithura",
+          "St Stephen's College, Uzhavoor",
+          "Bishop Vayalil Memorial Holy Cross College, Cherpunkal",
+          "Mar Augusthinose College, Ramapuram",
+          "Other"
+        ];
+        if (!allowed.includes(value as string))
+          return "Please select a valid college.";
+        return "";
+      }
+
+      // ── collegeOther: required when college === "Other" ──────────────────────
+      case "collegeOther": {
+        const v = (value as string).trim();
+        if (v.length < 2) return "Please specify the college (min. 2 characters).";
+        if (v.length > 100) return "Must not exceed 100 characters.";
+        if (!/^[A-Za-z0-9\s\-'.,()]+$/.test(v))
+          return "Contains invalid characters.";
+        return "";
+      }
+
+      // ── Institute: required when affiliation === "Institutes" ──────────────
+      case "institute": {
+        const allowed = ["IELTS", "German", "SSC", "Other"];
+        if (!allowed.includes(value as string))
+          return "Please select a valid institute.";
+        return "";
+      }
+
+      // ── instituteOther: required when institute === "Other" ─────────────────
+      case "instituteOther": {
+        const v = (value as string).trim();
+        if (v.length < 2) return "Please specify the institute (min. 2 characters).";
+        if (v.length > 100) return "Must not exceed 100 characters.";
+        if (!/^[A-Za-z0-9\s\-'.,()]+$/.test(v))
+          return "Contains invalid characters.";
+        return "";
+      }
+
+      // ── Year of Study: required when affiliation === "College" ─────────────
       case "yearOfStudy": {
         const allowed = [
           "UG - 1st Year", "UG - 2nd Year", "UG - 3rd Year", "UG - 4th Year",
@@ -156,39 +276,6 @@ export default function RegistrationForm() {
         if (v.length < 2) return "Please specify your year of study (min. 2 characters).";
         if (v.length > 100) return "Must not exceed 100 characters.";
         if (!/^[A-Za-z0-9\s\-.()/]+$/.test(v))
-          return "Contains invalid characters.";
-        return "";
-      }
-
-      case "college": {
-        const allowed = [
-          "St Joseph's College of Engineering and Technology, Choondacherry",
-          "St Joseph's Institute of Hotel Management and Catering Technology, Choondacherry",
-          "Alphonsa College, Pala",
-          "Devamatha College, Kuravilangad",
-          "St Thomas College, Pala",
-          "St Joseph's College, Moolamattom",
-          "St George's College, Aruvithura",
-          "St Stephen's College, Uzhavoor",
-          "Bishop Vayalil Memorial Holy Cross College, Cherpunkal",
-          "Mar Augusthinose College, Ramapuram",
-          "+2 Passout",
-          "IELTS",
-          "German",
-          "SSC",
-          "Other"
-        ];
-        if (!allowed.includes(value as string))
-          return "Please select a valid college.";
-        return "";
-      }
-
-      // ── collegeOther: required when college === "Other" ──────────────────────
-      case "collegeOther": {
-        const v = (value as string).trim();
-        if (v.length < 2) return "Please specify your college name (min. 2 characters).";
-        if (v.length > 100) return "Must not exceed 100 characters.";
-        if (!/^[A-Za-z0-9\s\-'.,()]+$/.test(v))
           return "Contains invalid characters.";
         return "";
       }
@@ -240,9 +327,32 @@ export default function RegistrationForm() {
 
     setFormData((prev) => {
       const next = { ...prev, [name]: val };
-      // When the user changes away from "Other", clear the custom text field
-      if (name === "yearOfStudy" && val !== "Other") next.yearOfStudyOther = "";
-      if (name === "college" && val !== "Other") next.collegeOther = "";
+      if (name === "affiliation") {
+        if (val !== "Other") next.affiliationOther = "";
+        if (val !== "College") {
+          next.college = "";
+          next.collegeOther = "";
+          next.yearOfStudy = "";
+          next.yearOfStudyOther = "";
+        }
+        if (val !== "Institutes") {
+          next.institute = "";
+          next.instituteOther = "";
+        }
+      }
+      if (name === "college") {
+        if (val !== "Other") next.collegeOther = "";
+        if (!val) {
+          next.yearOfStudy = "";
+          next.yearOfStudyOther = "";
+        }
+      }
+      if (name === "institute" && val !== "Other") {
+        next.instituteOther = "";
+      }
+      if (name === "yearOfStudy" && val !== "Other") {
+        next.yearOfStudyOther = "";
+      }
       return next;
     });
     // Clear server-side error whenever user edits the form
@@ -269,10 +379,27 @@ export default function RegistrationForm() {
   };
 
   const validateStep1 = () => {
-    const step1Fields: (keyof FormData)[] = ["name", "dob", "phone", "email", "gender", "yearOfStudy", "college"];
-    // Conditionally require the free-text "Other" fields
-    if (formData.yearOfStudy === "Other") step1Fields.push("yearOfStudyOther");
-    if (formData.college === "Other") step1Fields.push("collegeOther");
+    const step1Fields: (keyof FormData)[] = ["name", "dob", "phone", "email", "gender", "affiliation"];
+    if (formData.affiliation === "Other") {
+      step1Fields.push("affiliationOther");
+    }
+    if (formData.affiliation === "College") {
+      step1Fields.push("college");
+      if (formData.college === "Other") {
+        step1Fields.push("collegeOther");
+      }
+      // Year of Study is shown and required after college is selected / when in College affiliation
+      step1Fields.push("yearOfStudy");
+      if (formData.yearOfStudy === "Other") {
+        step1Fields.push("yearOfStudyOther");
+      }
+    }
+    if (formData.affiliation === "Institutes") {
+      step1Fields.push("institute");
+      if (formData.institute === "Other") {
+        step1Fields.push("instituteOther");
+      }
+    }
     const newErrors: FormErrors = {};
     let isValid = true;
 
@@ -548,74 +675,102 @@ export default function RegistrationForm() {
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                  {/* Affiliation and Conditional Fields */}
+                  <div className="space-y-6">
+                    <FormSelect
+                      label="Affiliation" name="affiliation"
+                      value={formData.affiliation} onChange={handleChange} onBlur={handleBlur}
+                      error={errors.affiliation} touched={touched.affiliation}
+                      options={AFFILIATION_OPTIONS}
+                      disabled={isLoading}
+                    />
 
-                    {/* Year of Study column */}
-                    <div className="flex flex-col gap-3">
-                      <FormSelect
-                        label="Year of Study" name="yearOfStudy"
-                        value={formData.yearOfStudy} onChange={handleChange} onBlur={handleBlur} error={errors.yearOfStudy} touched={touched.yearOfStudy}
-                        options={[
-                          { value: "UG - 1st Year", label: "UG — 1st Year" },
-                          { value: "UG - 2nd Year", label: "UG — 2nd Year" },
-                          { value: "UG - 3rd Year", label: "UG — 3rd Year" },
-                          { value: "UG - 4th Year", label: "UG — 4th Year" },
-                          { value: "PG - 1st Year", label: "PG — 1st Year" },
-                          { value: "PG - 2nd Year", label: "PG — 2nd Year" },
-                          { value: "Other", label: "Other" },
-                        ]}
-                        disabled={isLoading}
-                      />
-                      {formData.yearOfStudy === "Other" && (
-                        <div className="animate-fade-up">
-                          <FormField
-                            label="Please specify" name="yearOfStudyOther" type="text"
-                            placeholder="e.g. Diploma 2nd Year"
-                            value={formData.yearOfStudyOther} onChange={handleChange} onBlur={handleBlur}
-                            error={errors.yearOfStudyOther} touched={touched.yearOfStudyOther}
+                    {/* 1. If 'Other' is selected -> Show 'Please specify' */}
+                    {formData.affiliation === "Other" && (
+                      <div className="animate-fade-up">
+                        <FormField
+                          label="Please specify" name="affiliationOther" type="text"
+                          placeholder="e.g. Research Scholar"
+                          value={formData.affiliationOther} onChange={handleChange} onBlur={handleBlur}
+                          error={errors.affiliationOther} touched={touched.affiliationOther}
+                          disabled={isLoading}
+                        />
+                      </div>
+                    )}
+
+                    {/* 2. If 'College' is selected -> Show College dropdown (+ Other text) and Year of Study */}
+                    {formData.affiliation === "College" && (
+                      <div className="space-y-6 animate-fade-up">
+                        <div className="flex flex-col gap-3">
+                          <FormSelect
+                            label="College" name="college"
+                            value={formData.college} onChange={handleChange} onBlur={handleBlur}
+                            error={errors.college} touched={touched.college}
+                            options={COLLEGE_OPTIONS}
                             disabled={isLoading}
                           />
+                          {formData.college === "Other" && (
+                            <div className="animate-fade-up">
+                              <FormField
+                                label="Please specify the college" name="collegeOther" type="text"
+                                placeholder="e.g. M A College"
+                                value={formData.collegeOther} onChange={handleChange} onBlur={handleBlur}
+                                error={errors.collegeOther} touched={touched.collegeOther}
+                                disabled={isLoading}
+                              />
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
 
-                    {/* College column */}
-                    <div className="flex flex-col gap-3">
-                      <FormSelect
-                        label="College/Course" name="college"
-                        value={formData.college} onChange={handleChange} onBlur={handleBlur} error={errors.college} touched={touched.college}
-                        options={[
-                          { value: "St Joseph's College of Engineering and Technology, Choondacherry", label: "St Joseph's College of Engineering and Technology, Choondacherry" },
-                          { value: "St Joseph's Institute of Hotel Management and Catering Technology, Choondacherry", label: "St Joseph's Institute of Hotel Management and Catering Technology, Choondacherry" },
-                          { value: "Alphonsa College, Pala", label: "Alphonsa College, Pala" },
-                          { value: "Devamatha College, Kuravilangad", label: "Devamatha College, Kuravilangad" },
-                          { value: "St Thomas College, Pala", label: "St Thomas College, Pala" },
-                          { value: "St Joseph's College, Moolamattom", label: "St Joseph's College, Moolamattom" },
-                          { value: "St George's College, Aruvithura", label: "St George's College, Aruvithura" },
-                          { value: "St Stephen's College, Uzhavoor", label: "St Stephen's College, Uzhavoor" },
-                          { value: "Bishop Vayalil Memorial Holy Cross College, Cherpunkal", label: "Bishop Vayalil Memorial Holy Cross College, Cherpunkal" },
-                          { value: "Mar Augusthinose College, Ramapuram", label: "Mar Augusthinose College, Ramapuram" },
-                          { value: "+2 Passout", label: "+2 Passout" },
-                          { value: "IELTS", label: "IELTS" },
-                          { value: "German", label: "German" },
-                          { value: "SSC", label: "SSC" },
-                          { value: "Other", label: "Other" },
-                        ]}
-                        disabled={isLoading}
-                      />
-                      {formData.college === "Other" && (
-                        <div className="animate-fade-up">
-                          <FormField
-                            label="Please specify" name="collegeOther" type="text"
-                            placeholder="e.g. M A College"
-                            value={formData.collegeOther} onChange={handleChange} onBlur={handleBlur}
-                            error={errors.collegeOther} touched={touched.collegeOther}
-                            disabled={isLoading}
-                          />
-                        </div>
-                      )}
-                    </div>
+                        {/* After a college is selected -> show Year of Study dropdown */}
+                        {formData.college && (
+                          <div className="flex flex-col gap-3 animate-fade-up">
+                            <FormSelect
+                              label="Year of Study" name="yearOfStudy"
+                              value={formData.yearOfStudy} onChange={handleChange} onBlur={handleBlur}
+                              error={errors.yearOfStudy} touched={touched.yearOfStudy}
+                              options={YEAR_OF_STUDY_OPTIONS}
+                              disabled={isLoading}
+                            />
+                            {formData.yearOfStudy === "Other" && (
+                              <div className="animate-fade-up">
+                                <FormField
+                                  label="Please specify" name="yearOfStudyOther" type="text"
+                                  placeholder="e.g. Diploma 2nd Year"
+                                  value={formData.yearOfStudyOther} onChange={handleChange} onBlur={handleBlur}
+                                  error={errors.yearOfStudyOther} touched={touched.yearOfStudyOther}
+                                  disabled={isLoading}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    )}
 
+                    {/* 3. If 'Institutes' is selected -> Show Institute dropdown (+ Other text) */}
+                    {formData.affiliation === "Institutes" && (
+                      <div className="flex flex-col gap-3 animate-fade-up">
+                        <FormSelect
+                          label="Institute" name="institute"
+                          value={formData.institute} onChange={handleChange} onBlur={handleBlur}
+                          error={errors.institute} touched={touched.institute}
+                          options={INSTITUTE_OPTIONS}
+                          disabled={isLoading}
+                        />
+                        {formData.institute === "Other" && (
+                          <div className="animate-fade-up">
+                            <FormField
+                              label="Please specify the institute" name="instituteOther" type="text"
+                              placeholder="e.g. OET Training Center"
+                              value={formData.instituteOther} onChange={handleChange} onBlur={handleBlur}
+                              error={errors.instituteOther} touched={touched.instituteOther}
+                              disabled={isLoading}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

@@ -6,6 +6,41 @@ import { z } from "zod";
 // Mirrors the form fields in RegistrationForm.tsx.
 // Server-side validation is the authoritative source of truth.
 
+const AFFILIATION_OPTIONS = [
+  "+2 Passout",
+  "College",
+  "Institutes",
+  "Job Seeking",
+  "Employed",
+  "Other",
+] as const;
+
+const COLLEGE_OPTIONS = [
+  "St Joseph's College of Engineering and Technology, Choondacherry",
+  "St Joseph's Institute of Hotel Management and Catering Technology, Choondacherry",
+  "Alphonsa College, Pala",
+  "Devamatha College, Kuravilangad",
+  "St Thomas College, Pala",
+  "St Joseph's College, Moolamattom",
+  "St George's College, Aruvithura",
+  "St Stephen's College, Uzhavoor",
+  "Bishop Vayalil Memorial Holy Cross College, Cherpunkal",
+  "Mar Augusthinose College, Ramapuram",
+  "Other",
+] as const;
+
+const INSTITUTE_OPTIONS = ["IELTS", "German", "SSC", "Other"] as const;
+
+const YEAR_OF_STUDY_OPTIONS = [
+  "UG - 1st Year",
+  "UG - 2nd Year",
+  "UG - 3rd Year",
+  "UG - 4th Year",
+  "PG - 1st Year",
+  "PG - 2nd Year",
+  "Other",
+] as const;
+
 const RegistrationSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters.").max(120),
   dob: z
@@ -20,33 +55,16 @@ const RegistrationSchema = z.object({
     .regex(/^\+?[\d\s\-]{10,}$/, "Enter a valid phone number."),
   email: z.string().email("Enter a valid email address.").max(255),
   gender: z.enum(["male", "female"], { message: "Gender must be male or female." }),
-  yearOfStudy: z.string().refine(
-    (v) => ["UG - 1st Year", "UG - 2nd Year", "UG - 3rd Year", "UG - 4th Year",
-      "PG - 1st Year", "PG - 2nd Year", "Other"].includes(v),
-    { message: "Invalid year of study." }
-  ),
-  yearOfStudyOther: z.string().optional(),
-  college: z.string().refine(
-    (v) => [
-      "St Joseph's College of Engineering and Technology, Choondacherry",
-      "St Joseph's Institute of Hotel Management and Catering Technology, Choondacherry",
-      "Alphonsa College, Pala",
-      "Devamatha College, Kuravilangad",
-      "St Thomas College, Pala",
-      "St Joseph's College, Moolamattom",
-      "St George's College, Aruvithura",
-      "St Stephen's College, Uzhavoor",
-      "Bishop Vayalil Memorial Holy Cross College, Cherpunkal",
-      "Mar Augusthinose College, Ramapuram",
-      "+2 Passout",
-      "IELTS",
-      "German",
-      "SSC",
-      "Other"
-    ].includes(v),
-    { message: "Invalid college name." }
-  ),
+  affiliation: z.string().refine((v) => (AFFILIATION_OPTIONS as readonly string[]).includes(v), {
+    message: "Invalid affiliation.",
+  }),
+  affiliationOther: z.string().optional(),
+  college: z.string().optional(),
   collegeOther: z.string().optional(),
+  institute: z.string().optional(),
+  instituteOther: z.string().optional(),
+  yearOfStudy: z.string().optional(),
+  yearOfStudyOther: z.string().optional(),
   parish: z.string().min(1, "Parish name is required.").max(200),
   diocese: z.string().min(1, "Diocese name is required.").max(200),
   address: z.string().min(10, "Address must be at least 10 characters.").max(200, "Address must not exceed 200 characters."),
@@ -54,38 +72,96 @@ const RegistrationSchema = z.object({
     message: "You must confirm to submit.",
   }),
 }).superRefine((data, ctx) => {
-  // When yearOfStudy is "Other", require a custom text value
-  if (data.yearOfStudy === "Other") {
-    const v = (data.yearOfStudyOther ?? "").trim();
+  // 1. If Affiliation is "Other", require affiliationOther
+  if (data.affiliation === "Other") {
+    const v = (data.affiliationOther ?? "").trim();
     if (v.length < 2) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ["yearOfStudyOther"],
-        message: "Please specify your year of study (min. 2 characters).",
+        path: ["affiliationOther"],
+        message: "Please specify your affiliation (min. 2 characters).",
       });
     } else if (v.length > 100) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ["yearOfStudyOther"],
+        path: ["affiliationOther"],
         message: "Must not exceed 100 characters.",
       });
     }
   }
-  // When college is "Other", require a custom text value
-  if (data.college === "Other") {
-    const v = (data.collegeOther ?? "").trim();
-    if (v.length < 2) {
+
+  // 2. If Affiliation is "College"
+  if (data.affiliation === "College") {
+    if (!data.college || !(COLLEGE_OPTIONS as readonly string[]).includes(data.college as any)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ["collegeOther"],
-        message: "Please specify your college name (min. 2 characters).",
+        path: ["college"],
+        message: "Please select a valid college.",
       });
-    } else if (v.length > 100) {
+    } else if (data.college === "Other") {
+      const v = (data.collegeOther ?? "").trim();
+      if (v.length < 2) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["collegeOther"],
+          message: "Please specify the college (min. 2 characters).",
+        });
+      } else if (v.length > 100) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["collegeOther"],
+          message: "Must not exceed 100 characters.",
+        });
+      }
+    }
+
+    if (!data.yearOfStudy || !(YEAR_OF_STUDY_OPTIONS as readonly string[]).includes(data.yearOfStudy as any)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ["collegeOther"],
-        message: "Must not exceed 100 characters.",
+        path: ["yearOfStudy"],
+        message: "Please select a valid year of study.",
       });
+    } else if (data.yearOfStudy === "Other") {
+      const v = (data.yearOfStudyOther ?? "").trim();
+      if (v.length < 2) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["yearOfStudyOther"],
+          message: "Please specify your year of study (min. 2 characters).",
+        });
+      } else if (v.length > 100) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["yearOfStudyOther"],
+          message: "Must not exceed 100 characters.",
+        });
+      }
+    }
+  }
+
+  // 3. If Affiliation is "Institutes"
+  if (data.affiliation === "Institutes") {
+    if (!data.institute || !(INSTITUTE_OPTIONS as readonly string[]).includes(data.institute as any)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["institute"],
+        message: "Please select a valid institute.",
+      });
+    } else if (data.institute === "Other") {
+      const v = (data.instituteOther ?? "").trim();
+      if (v.length < 2) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["instituteOther"],
+          message: "Please specify the institute (min. 2 characters).",
+        });
+      } else if (v.length > 100) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["instituteOther"],
+          message: "Must not exceed 100 characters.",
+        });
+      }
     }
   }
 });
@@ -229,6 +305,32 @@ export async function POST(request: Request) {
   }
 
   // 7. Insert the registration
+  const resolvedAffiliation =
+    data.affiliation === "Other"
+      ? (data.affiliationOther ?? "").trim()
+      : data.affiliation;
+
+  const resolvedCollege =
+    data.affiliation === "College"
+      ? data.college === "Other"
+        ? (data.collegeOther ?? "").trim()
+        : (data.college ?? null)
+      : null;
+
+  const resolvedInstitute =
+    data.affiliation === "Institutes"
+      ? data.institute === "Other"
+        ? (data.instituteOther ?? "").trim()
+        : (data.institute ?? null)
+      : null;
+
+  const resolvedYearOfStudy =
+    data.affiliation === "College"
+      ? data.yearOfStudy === "Other"
+        ? (data.yearOfStudyOther ?? "").trim()
+        : (data.yearOfStudy ?? null)
+      : null;
+
   const { data: registration, error: insertError } = await supabase
     .from("registrations")
     .insert({
@@ -239,13 +341,10 @@ export async function POST(request: Request) {
       phone: data.phone.trim(),
       email: data.email.toLowerCase().trim(),
       gender: data.gender,
-      // Resolve "Other" — store the custom text the user typed, not the literal "Other"
-      year_of_study: data.yearOfStudy === "Other"
-        ? (data.yearOfStudyOther ?? "").trim()
-        : data.yearOfStudy,
-      college: data.college === "Other"
-        ? (data.collegeOther ?? "").trim()
-        : data.college,
+      affiliation: resolvedAffiliation,
+      college: resolvedCollege,
+      institute: resolvedInstitute,
+      year_of_study: resolvedYearOfStudy,
       parish: data.parish.trim(),
       diocese: data.diocese.trim(),
       address: data.address.trim(),
@@ -319,8 +418,10 @@ export async function POST(request: Request) {
         name: data.name.trim(),
         parish: data.parish.trim(),
         diocese: data.diocese.trim(),
-        college: data.college === "Other" ? (data.collegeOther ?? "").trim() : data.college,
-        yearOfStudy: data.yearOfStudy === "Other" ? (data.yearOfStudyOther ?? "").trim() : data.yearOfStudy,
+        affiliation: resolvedAffiliation,
+        college: resolvedCollege ?? undefined,
+        institute: resolvedInstitute ?? undefined,
+        yearOfStudy: resolvedYearOfStudy ?? undefined,
         gender: data.gender,
         phone: data.phone.trim(),
         email: data.email.toLowerCase().trim(),

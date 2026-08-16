@@ -34,8 +34,10 @@ export type TicketPayload = {
     name: string;
     parish: string;
     diocese: string;
-    college: string;
-    yearOfStudy: string;
+    affiliation?: string;
+    college?: string;
+    institute?: string;
+    yearOfStudy?: string;
     gender: string;
     phone: string;
     email: string;
@@ -233,9 +235,18 @@ export async function generateTicketPdf(payload: TicketPayload): Promise<void> {
     "+2 Passout": "+2 Passout"
   };
 
-  const displayCollege = collegeAbbreviations[participant.college] || participant.college;
+  let firstFieldLabel = "Affiliation";
+  let firstFieldValue = participant.affiliation || "-";
 
-  drawField("College", displayCollege, MARGIN);
+  if (participant.college) {
+    firstFieldLabel = "College";
+    firstFieldValue = collegeAbbreviations[participant.college] || participant.college;
+  } else if (participant.institute) {
+    firstFieldLabel = "Institute";
+    firstFieldValue = participant.institute;
+  }
+
+  drawField(firstFieldLabel, firstFieldValue, MARGIN);
   drawField("Parish", participant.parish, MARGIN + colGap);
 
   // ── 10. Footer — ticket number + registration timestamp ───────
