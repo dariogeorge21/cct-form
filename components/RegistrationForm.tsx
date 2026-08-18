@@ -836,7 +836,7 @@ export default function RegistrationForm() {
             <button
               type="submit"
               disabled={isSubmitDisabled}
-              className="btn-fill-gold flex items-center justify-center gap-2 group w-full sm:w-auto px-8 py-4 text-[0.9rem] font-semibold rounded disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none min-w-[200px]"
+              className="btn-fill-gold flex items-center justify-center gap-2 group w-full sm:w-auto px-8 py-4 text-[0.9rem] font-semibold rounded disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none min-w-[200px] hover:text-black"
             >
               {isLoading ? (
                 <span className="flex items-center gap-1.5">
